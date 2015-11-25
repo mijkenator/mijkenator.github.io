@@ -7,6 +7,7 @@ gem 'middleman-blog', '~> 3.5.3'
 gem 'middleman-livereload', '~> 3.4.3'
 gem 'middleman-deploy', '~> 1.0.0'
 gem 'middleman-google-analytics'
+gem 'middleman-meta-tags'
 
 # For feed.xml.builder
 gem 'builder', '~> 3.2.2'

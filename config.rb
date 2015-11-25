@@ -47,13 +47,16 @@ set :casper, {
     twitter: nil # Optional
   },
   navigation: {
-    "Home"   => "/",
-    "GitHub" => "https://github.com/mijkenator"
+    "Home"     => "/",
+    "GitHub"   => "https://github.com/mijkenator",
+    "Contacts" => "/contacts"
   }
 }
 
 page '/feed.xml', layout: false
 page '/sitemap.xml', layout: false
+page '/contacts.html', :layout => "page"
+page '/googlee72247530060f6d0.html', :layout => false, :directory_index => false
 
 ignore '/partials/*'
 
@@ -159,3 +162,6 @@ end
 activate :google_analytics do |ga|
     ga.tracking_id = 'UA-69950918-1'
 end
+
+activate :meta_tags
+
