@@ -12,6 +12,7 @@ What is the 10 001st prime number?<br/>
 [Link to original description](https://projecteuler.net/problem=7)<br/>
 [Source code examples on Github](https://github.com/mijkenator/pr_euler/tree/master/p7)
 
+READMORE
 
 ## Erlang version 1
 ```erlang

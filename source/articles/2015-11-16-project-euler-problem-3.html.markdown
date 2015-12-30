@@ -12,7 +12,7 @@ What is the largest prime factor of the number 600851475143 ?<br/>
 [Link to original description](https://projecteuler.net/problem=3)<br/>
 [Source code examples on Github](https://github.com/mijkenator/pr_euler/tree/master/p3)
 
-
+READMORE
 
 ## Erlang version 1
 ```erlang

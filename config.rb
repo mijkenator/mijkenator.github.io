@@ -13,8 +13,8 @@ activate :blog do |blog|
   blog.sources = "articles/{year}-{month}-{day}-{title}.html"
   blog.taglink = "tag/{tag}.html"
   # blog.layout = "layout"
-  # blog.summary_separator = /(READMORE)/
-  # blog.summary_length = 250
+  blog.summary_separator = /(READMORE)/
+  blog.summary_length = 250
   # blog.year_link = "{year}.html"
   # blog.month_link = "{year}/{month}.html"
   # blog.day_link = "{year}/{month}/{day}.html"
@@ -49,13 +49,15 @@ set :casper, {
   navigation: {
     "Home"     => "/",
     "GitHub"   => "https://github.com/mijkenator",
-    "Contacts" => "/contacts"
+    "Contacts" => "/contacts",
+    "Project Euler" => "/project-euler"
   }
 }
 
 page '/feed.xml', layout: false
 page '/sitemap.xml', layout: false
 page '/contacts.html', :layout => "page"
+page '/project-euler.html', :layout => "page"
 page '/googlee72247530060f6d0.html', :layout => false, :directory_index => false
 
 ignore '/partials/*'

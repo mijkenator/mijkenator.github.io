@@ -12,6 +12,8 @@ Find the sum of all the primes below two million.<br>
 [Link to original description](https://projecteuler.net/problem=10)<br/>
 [Source code examples on Github](https://github.com/mijkenator/pr_euler/tree/master/p10)
 
+READMORE
+
 ## Erlang version 1
 ```erlang
 #!/usr/bin/env escript
