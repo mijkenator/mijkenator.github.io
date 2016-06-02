@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mijkenator`s blog: Project Euler Problem 43</title>
+<meta name="keywords" content="project Euler, erlang, perl, python" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta content='Sub-string divisibility The number, 1406357289, is a 0 to 9 pandigital number because it is made up of each of the digits 0 to 9 in some order, ...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='Mijkenator`s blog' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Project Euler Problem 43' property='og:title'>
+<meta content='Sub-string divisibility The number, 1406357289, is a 0 to 9 pandigital number because it is made up of each of the digits 0 to 9 in some order, ...' property='og:description'>
+<meta content='http://mijkenator.github.io/2016/03/15/project-euler-problem-43/' property='og:url'>
+<meta content='2016-03-15' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Project Euler Problem 43' name='twitter:title'>
+<meta content='Sub-string divisibility The number, 1406357289, is a 0 to 9 pandigital number because it is made up of each of the digits 0 to 9 in some order, ...' name='twitter:description'>
+<meta content='http://mijkenator.github.io/2016/03/15/project-euler-problem-43/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href="/stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-github' role='presentation'>
+<a href='https://github.com/mijkenator'>GitHub</a>
+</li>
+<li class='nav-contacts' role='presentation'>
+<a href='/contacts'>Contacts</a>
+</li>
+<li class='nav-project-euler' role='presentation'>
+<a href='/project-euler'>Project Euler</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Project Euler Problem 43</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-03-15'>
+15 March 2016
+</time>
+on <a href='/tag/project-euler/'>project euler</a>, <a href='/tag/erlang/'>erlang</a>, <a href='/tag/python/'>python</a>
+</section>
+</header>
+<section class='post-content'><p><b>Sub-string divisibility</b></p>
+
+<p>The number, 1406357289, is a 0 to 9 pandigital number because it is made up of each of the digits 0 to 9 in some order, but it also has a rather interesting sub-string divisibility property.</p>
+
+<p>Let d1 be the 1st digit, d2 be the 2nd digit, and so on. In this way, we note the following:</p>
+
+<p></p>
+
+<pre>
+            d2d3d4=406 is divisible by 2
+            d3d4d5=063 is divisible by 3
+            d4d5d6=635 is divisible by 5
+            d5d6d7=357 is divisible by 7
+            d6d7d8=572 is divisible by 11
+            d7d8d9=728 is divisible by 13
+            d8d9d10=289 is divisible by 17
+</pre>
+
+<p>Find the sum of all 0 to 9 pandigital numbers with this property.</p>
+
+<p>So, lets try to simplify the problem, because brutforce take a lot of time (10! numbers will have to check).</p>
+
+<p><b>1.</b> We know d4d5d6 is divisible by 5 -&gt; so d6 have to be 5 or 0.</p>
+
+<p><b>2.</b> and d6d7d8 is divisible by 11 and d6 = 0|5. If d6=0 -&gt; d6d7d8=011|022|033..099 and or result will not be a pandigital. So d6 hase to be <b>5</b>.</p>
+
+<p><b>3.</b> lets find all 5XX (d6d7d8) pandigital numbers divisible by 11:</p>
+
+<pre>
+>>> import itertools
+>>> sorted([i for i in sum([[int('5'+a+b),int('5'+b+a)] for (a,b) in itertools.combinations('0123456789',2)],[]) if i%11==0])
+[506, 517, 528, 539, 550, 561, 572, 583, 594]
+</pre>
+
+<p><b>4.</b> d7d8d9 has to be divisible by 13 and we are already know d7d8 is 06|17|28|39|50|61|72|83|94</p>
+
+<pre>
+>>> sum([[int(i+str(n)) for n in range(0,10) if int(i+str(n)) % 13 == 0] for i in ['06','17','28','39','50','61','72','83','94']],[])
+[65, 286, 390, 507, 611, 728, 832, 949]
+</pre>
+
+<p>after exclude 611 and 949 we have 065,286,507,728,832. We have also exclude 065 and 507 because d6 is 5. So we have only 4 combinations:
+<pre>
+286,390,728,832
+after addind d6 we have:
+5286,5390,5728,5832 (d6d7d8d9)
+</pre></p>
+
+<p><b>5.</b> d8d9d10 has to be divisible by 17 and d8d9 is 86|90|28|32, so:</p>
+
+<pre>
+>>> sum([[int(i+str(n)) for n in range(0,10) if int(i+str(n)) % 17 == 0] for i in ['86','90','28','32']],[])
+[867, 901, 289, 323]
+</pre>
+
+<p>323 has gone and we can form 3 combinations for d6d7d8d9d10:</p>
+
+<pre>
+52867, 53901, 57289  -- it is all possible endings for our numbers
+</pre>
+
+<p><b>6.</b> d5d6d7 must be divisible by 7 and must end on 52, 53 or 57. -&gt;</p>
+
+<pre>
+>>> sum([[int(str(n)+i) for n in range(0,10) if int(str(n)+i) % 7 == 0]for i in ['52','53','57']],[])
+[252, 952, 553, 357]
+and we have d5d6d7d8d9d10 combinations:
+952867,357289
+</pre>
+
+<p><b>7.</b> d2d3d4 has to be divisible by 2 -&gt; d4 can be in 0,2,4,6,8 -&gt;</p>
+
+<pre>
+    d4d5d6d7d8d9d10  ->  0952867,4952867,0357289,4357289,6357289   
+</pre>
+
+<p><b>8.</b> d3d4d5 divisible by 3 and end with 09,49,03,43,63. And d3+d4+d5 has to be divisible by 3. So -&gt;</p>
+
+<pre>
+>>> sum([[int(str(n)+i) for n in range(0,10) if int(str(n)+i) % 3 == 0]for i in ['09','49','03','43','63']],[])
+[9, 309, 609, 909, 249, 549, 849, 3, 303, 603, 903, 243, 543, 843, 63, 363, 663, 963]
+and after excluding repeating digits we have d3d4d5d6d7d8d9d10:
+30952867, 60357289, 06357289
+</pre>
+
+<p><b>9.</b> we have only 1 and 4 digits to add:</p>
+
+<pre>
+>>> sum(sum([[int(i+x) for i in ['14', '41']] for x in ['30952867', '60357289', '06357289']],[]))
+16695334890
+</pre>
+
+<p>actually its it. No programm needed.</p>
+
+<div id="disqus_thread"></div>
+
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+    this.page.url = '2016/03/15/project-euler-problem-43/'; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 'pep43'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//mijkenator.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mijkenator/'>Mijkenator</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mijkenator/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Project Euler Problem 43&amp;amp;url=http://mijkenator.github.io/2016/03/15/project-euler-problem-43/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://mijkenator.github.io/2016/03/15/project-euler-problem-43/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://mijkenator.github.io/2016/03/15/project-euler-problem-43/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/03/15/project-euler-problem-42/'>
+<section class='post'>
+<h2>Project Euler Problem 42</h2>
+<p>Coded triangle numbers The n-th term of the sequence of triangle numbers is given by, tn = ½n(n+1); so&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/03/16/project-euler-problem-44/'>
+<section class='post'>
+<h2>Project Euler Problem 44</h2>
+<p>Pentagon numbers Pentagonal numbers are generated by the formula, Pn=n(3n−1)/2. The first ten pentagonal numbers are: 1, 5, 12,&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>Mijkenator`s blog</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-69950918-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>

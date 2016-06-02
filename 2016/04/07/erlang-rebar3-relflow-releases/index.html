@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mijkenator`s blog: rebar3 and relflow</title>
+<meta name="keywords" content="project Euler, erlang, perl, python" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta content='Rebar3 and relflow and release upgrade and downgrade Simple how-to with examples of build, upgrade and downgrade with rebar3 and relflow plugin....' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='Mijkenator`s blog' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='rebar3 and relflow' property='og:title'>
+<meta content='Rebar3 and relflow and release upgrade and downgrade Simple how-to with examples of build, upgrade and downgrade with rebar3 and relflow plugin....' property='og:description'>
+<meta content='http://mijkenator.github.io/2016/04/07/erlang-rebar3-relflow-releases/' property='og:url'>
+<meta content='2016-04-07' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='rebar3 and relflow' name='twitter:title'>
+<meta content='Rebar3 and relflow and release upgrade and downgrade Simple how-to with examples of build, upgrade and downgrade with rebar3 and relflow plugin....' name='twitter:description'>
+<meta content='http://mijkenator.github.io/2016/04/07/erlang-rebar3-relflow-releases/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href="/stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-github' role='presentation'>
+<a href='https://github.com/mijkenator'>GitHub</a>
+</li>
+<li class='nav-contacts' role='presentation'>
+<a href='/contacts'>Contacts</a>
+</li>
+<li class='nav-project-euler' role='presentation'>
+<a href='/project-euler'>Project Euler</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>rebar3 and relflow</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2016-04-07'>
+07 April 2016
+</time>
+on <a href='/tag/erlang/'>erlang</a>, <a href='/tag/rebar3/'>rebar3</a>, <a href='/tag/relflow/'>relflow</a>, <a href='/tag/release/'>release</a>, <a href='/tag/relup/'>relup</a>
+</section>
+</header>
+<section class='post-content'><p><b>Rebar3 and relflow and release upgrade and downgrade </b></p>
+
+<p>Simple how-to with examples of build, upgrade and downgrade with <a rel="nofollow" href="http://www.rebar3.org">rebar3</a> and <a rel="nofollow" href="https://github.com/RJ/relflow">relflow</a> plugin. </p>
+
+<p></p>
+
+<p>Lets get simple test erlang project:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp$ </span>git clone https://github.com/mijkenator/fifo_server.git
+Cloning into <span class="s1">'fifo_server'</span>...
+remote: Counting objects: 30, <span class="k">done</span>.
+remote: Compressing objects: 100% <span class="o">(</span>22/22<span class="o">)</span>, <span class="k">done</span>.
+remote: Total 30 <span class="o">(</span>delta 5<span class="o">)</span>, reused 29 <span class="o">(</span>delta 4<span class="o">)</span>, pack-reused 0
+Unpacking objects: 100% <span class="o">(</span>30/30<span class="o">)</span>, <span class="k">done</span>.
+Checking connectivity... <span class="k">done</span>.
+<span class="gp">mkh@mkh-xps:~/work/tmp$ </span><span class="nb">cd </span>fifo_server
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>git log
+commit 6d2b8ae21b1e64b042e9238abf41b6b74e6b8ced
+Author: Mijkenator &lt;mijkenator@gmail.com&gt;
+Date:   Wed Apr 6 15:45:05 2016 -0400
+
+    change .gitignore file
+
+commit 2104d2a93e8f7480c4f062ae151b354cfc077445
+Author: Mijkenator &lt;mijkenator@gmail.com&gt;
+Date:   Wed Apr 6 15:40:20 2016 -0400
+
+    relflow added
+
+commit d1b122037a6482bced4965b680faffde13bd37f4
+Author: Mijkenator &lt;mijkenator@gmail.com&gt;
+Date:   Wed Mar 30 09:18:34 2016 -0400
+
+    fifo server init commit
+mkh@mkh-xps:~/work/tmp/fifo_server<span class="err">$</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>Now checkout first commit and build initial release:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>git checkout d1b122037a6482bced4965b680faffde13bd37f4
+Note: checking out <span class="s1">'d1b122037a6482bced4965b680faffde13bd37f4'</span>.
+
+You are <span class="k">in</span> <span class="s1">'detached HEAD'</span> state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make <span class="k">in </span>this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+<span class="k">do </span>so <span class="o">(</span>now or later<span class="o">)</span> by using -b with the checkout <span class="nb">command </span>again. Example:
+
+  git checkout -b new_branch_name
+
+HEAD is now at d1b1220... fifo server init commit
+</pre></td></tr></tbody></table>
+</div>
+
+<p>but before we have to edit rebar.config file and change:</p>
+
+<pre>
+{relx, [{release, { fifo_server, "0.1.0" },
+</pre>
+
+<p>to</p>
+
+<pre>
+{relx, [{release, { fifo_server, "first-release" },
+</pre>
+
+<p>now we can create first release and first release tarball:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>./rebar3 as prod release tar
+<span class="gp">===&gt; </span>Verifying dependencies...
+<span class="gp">===&gt; </span>Fetching lager <span class="o">({</span>pkg,&lt;&lt;<span class="s2">"lager"</span>&gt;&gt;,&lt;&lt;<span class="s2">"3.0.2"</span>&gt;&gt;<span class="o">})</span>
+<span class="gp">===&gt; </span>Version cached at /home/mkh/.cache/rebar3/hex/default/packages/lager-3.0.2.tar is up to date, reusing it
+<span class="gp">===&gt; </span>Linking _build/default/lib/lager to _build/prod/lib/lager
+<span class="gp">===&gt; </span>Fetching mkh_queue <span class="o">({</span>git,
+                                 <span class="s2">"https://github.com/mijkenator/mkh_queue.git"</span>,
+                                 <span class="o">{</span>ref,
+                                  <span class="s2">"d8e6ce951d0b8ea314dfdc77a2fd84701b6c206c"</span><span class="o">}})</span>
+<span class="gp">===&gt; </span>Linking _build/default/lib/mkh_queue to _build/prod/lib/mkh_queue
+<span class="gp">===&gt; </span>Fetching goldrush <span class="o">({</span>pkg,&lt;&lt;<span class="s2">"goldrush"</span>&gt;&gt;,&lt;&lt;<span class="s2">"0.1.7"</span>&gt;&gt;<span class="o">})</span>
+<span class="gp">===&gt; </span>Version cached at /home/mkh/.cache/rebar3/hex/default/packages/goldrush-0.1.7.tar is up to date, reusing it
+<span class="gp">===&gt; </span>Linking _build/default/lib/goldrush to _build/prod/lib/goldrush
+<span class="gp">===&gt; </span>Compiling mkh_queue
+<span class="gp">===&gt; </span>Compiling goldrush
+<span class="gp">===&gt; </span>Compiling lager
+<span class="gp">===&gt; </span>Compiling fifo_server
+<span class="gp">===&gt; </span>Starting relx build process ...
+<span class="gp">===&gt; </span>Resolving OTP Applications from directories:
+          /home/mkh/work/tmp/fifo_server/_build/prod/lib
+          /home/mkh/work/tmp/fifo_server/apps
+          /opt/r17.5/lib
+<span class="gp">===&gt; </span>Resolved fifo_server-first-release
+<span class="gp">===&gt; </span>Including Erts from /opt/r17.5
+<span class="gp">===&gt; </span>release successfully created!
+<span class="gp">===&gt; </span>tarball /home/mkh/work/tmp/fifo_server/_build/prod/rel/fifo_server/fifo_server-first-release.tar.gz successfully created!
+mkh@mkh-xps:~/work/tmp/fifo_server<span class="err">$</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>and you have your first release:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>ls -la _build/prod/rel/fifo_server/fifo_server-first-release.tar.gz 
+-rw-rw-r-- 1 mkh mkh 17394355 Apr  7 11:12 _build/prod/rel/fifo_server/fifo_server-first-release.tar.gz
+</pre></td></tr></tbody></table>
+</div>
+
+<p>Now we can unpack and start our application on target machine or same machine in another directory:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>mkdir ../test_server
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>cp _build/prod/rel/fifo_server/fifo_server-first-release.tar.gz ../test_server/
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span><span class="nb">cd</span> ../test_server/
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>tar xvf fifo_server-first-release.tar.gz
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>ls
+bin  erts-6.4  fifo_server-first-release.tar.gz  lib  releases
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>bin/fifo_server start
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>bin/fifo_server attach
+Attaching to /tmp/erl_pipes/fifo_server/erlang.pipe.1 <span class="o">(</span>^D to <span class="nb">exit</span><span class="o">)</span>
+
+<span class="gp">(fifo_server@mkh-xps)1&gt; </span>application:which_applications<span class="o">()</span>.
+<span class="o">[{</span>sasl,<span class="s2">"SASL  CXC 138 11"</span>,<span class="s2">"2.4.1"</span><span class="o">}</span>,
+ <span class="o">{</span>fifo_server,<span class="s2">"FIFO TCP server"</span>,<span class="s2">"0.1.0"</span><span class="o">}</span>,
+ <span class="o">{</span>lager,<span class="s2">"Erlang logging framework"</span>,<span class="s2">"3.0.2"</span><span class="o">}</span>,
+ <span class="o">{</span>goldrush,<span class="s2">"Erlang event stream processor"</span>,<span class="s2">"0.1.7"</span><span class="o">}</span>,
+ <span class="o">{</span>syntax_tools,<span class="s2">"Syntax tools"</span>,<span class="s2">"1.6.18"</span><span class="o">}</span>,
+ <span class="o">{</span>compiler,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"5.0.4"</span><span class="o">}</span>,
+ <span class="o">{</span>mkh_queue,<span class="s2">"FIFO queue application"</span>,<span class="s2">"0.1.0"</span><span class="o">}</span>,
+ <span class="o">{</span>stdlib,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"2.4"</span><span class="o">}</span>,
+ <span class="o">{</span>kernel,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"3.2"</span><span class="o">}]</span>
+<span class="gp">(fifo_server@mkh-xps)2&gt; </span>release_handler:which_releases<span class="o">()</span>.
+<span class="o">[{</span><span class="s2">"fifo_server"</span>,<span class="s2">"first-release"</span>,
+  <span class="o">[</span><span class="s2">"stdlib-2.4"</span>,<span class="s2">"kernel-3.2"</span>,<span class="s2">"mkh_queue-0.1.0"</span>,
+   <span class="s2">"compiler-5.0.4"</span>,<span class="s2">"syntax_tools-1.6.18"</span>,<span class="s2">"goldrush-0.1.7"</span>,
+   <span class="s2">"lager-3.0.2"</span>,<span class="s2">"fifo_server-0.1.0"</span>,<span class="s2">"sasl-2.4.1"</span><span class="o">]</span>,
+  permanent<span class="o">}]</span>
+<span class="o">(</span>fifo_server@mkh-xps<span class="o">)</span>3&gt;
+</pre></td></tr></tbody></table>
+</div>
+
+<p>So we are have installed application fifo_server and one permanent release &ldquo;first-release&rdquo;.
+Now detach from server console with Ctrl-D and back to dev directory:</p>
+
+<pre>
+mkh@mkh-xps:~/work/tmp/test_server$ cd ../fifo_server/
+mkh@mkh-xps:~/work/tmp/fifo_server$ git reset --hard origin/master
+HEAD is now at 6d2b8ae change .gitignore file
+mkh@mkh-xps:~/work/tmp/fifo_server$
+</pre>
+
+<p>And we are have added relflow plogin into rebar.cofig file and added new function v/0 into apps/fifo<em>server/src/fifo</em>server_app.erl with output &ldquo;1.0.0&rdquo;. So, we are ready to make next release. But before we have &ldquo;tag&rdquo; our first commit with tag &ldquo;first-release&rdquo; to make relflow working properly:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>git tag -a <span class="s2">"first-release"</span> d1b122037a6482bced4965b680faffde13bd37f4 -m <span class="s2">"first-release"</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>and run rebar3 relflow to make appup files:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>./rebar3 as prod relflow -u <span class="s2">"first-release"</span>
+<span class="gp">===&gt; </span>Replace apps/fifo_server/ebin/fifo_server.appup
+<span class="gp">===&gt; </span>Rewriting vsn <span class="k">in </span>fifo_server.app.src
+<span class="gp">===&gt; </span>Rewriting release vsn <span class="k">in </span>rebar.config: 20160407.174518
+<span class="gp">===&gt; </span><span class="nv">$ </span>git add apps/fifo_server/ebin/fifo_server.appup
+<span class="gp">===&gt; </span><span class="nv">$ </span>git add apps/fifo_server/src/fifo_server.app.src
+<span class="gp">===&gt; </span><span class="nv">$ </span>git add rebar.config
+<span class="gp">===&gt; </span><span class="nv">$ </span>git commit -m<span class="s2">"relflow  --&gt; 20160407.174518"</span>
+<span class="o">[</span>detached HEAD 15bd50b] relflow  --&gt; 20160407.174518
+ 3 files changed, 17 insertions<span class="o">(</span>+<span class="o">)</span>, 19 deletions<span class="o">(</span>-<span class="o">)</span>
+ create mode 100644 apps/fifo_server/ebin/fifo_server.appup
+ rewrite apps/fifo_server/src/fifo_server.app.src <span class="o">(</span>100%<span class="o">)</span>
+
+<span class="gp">===&gt; </span><span class="nv">$ </span>git tag -a <span class="s2">"v20160407.174518"</span> -m <span class="s2">"20160407.174518"</span>
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>with this command relflow made apps/fifo<em>server/src/fifo</em>server.app.src based on changes between commit tagged with &ldquo;first-release&rdquo; and current HEAD:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>cat apps/fifo_server/ebin/fifo_server.appup
+<span class="o">{</span><span class="s2">"20160407-174518-relflow"</span>,
+ <span class="o">[{</span><span class="s2">"0.1.0"</span>,[<span class="o">{</span>load_module,fifo_server_app<span class="o">}]}]</span>,
+ <span class="o">[{</span><span class="s2">"0.1.0"</span>,[]<span class="o">}]}</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>next command will create new release and release tarball:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>./rebar3 as prod release relup tar -u <span class="s2">"first-release"</span>
+<span class="gp">===&gt; </span>Verifying dependencies...
+<span class="gp">===&gt; </span>Compiling fifo_server
+<span class="gp">===&gt; </span>Starting relx build process ...
+<span class="gp">===&gt; </span>Resolving OTP Applications from directories:
+          /home/mkh/work/tmp/fifo_server/_build/prod/lib
+          /home/mkh/work/tmp/fifo_server/apps
+          /opt/r17.5/lib
+          /home/mkh/work/tmp/fifo_server/_build/prod/rel
+<span class="gp">===&gt; </span>Resolving available OTP Releases from directories:
+          /home/mkh/work/tmp/fifo_server/_build/prod/lib
+          /home/mkh/work/tmp/fifo_server/_build/prod/rel
+<span class="gp">===&gt; </span>Resolved fifo_server-20160407.174518
+<span class="gp">===&gt; </span>Including Erts from /opt/r17.5
+<span class="gp">===&gt; </span>release successfully created!
+<span class="gp">===&gt; </span>relup successfully created!
+<span class="gp">===&gt; </span>tarball /home/mkh/work/tmp/fifo_server/_build/prod/rel/fifo_server/fifo_server-20160407.174518.tar.gz successfully created!
+</pre></td></tr></tbody></table>
+</div>
+
+<p>so we are have <em>build/prod/rel/fifo</em>server/fifo_server-20160407.174518.tar.gz new release, lets try to install it:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>mkdir ../test_server/releases/20160407.174518                                                                          
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>cp _build/prod/rel/fifo_server/fifo_server-20160407.174518.tar.gz ../test_server/releases/20160407.174518/fifo_server.tar.gz
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span><span class="nb">cd</span> ../test_server/
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>bin/fifo_server install 20160407.174518
+Release 20160407.174518 not found, attempting to unpack releases/20160407.174518/fifo_server.tar.gz
+Unpacked successfully: <span class="s2">"20160407.174518"</span>
+Installed Release: 20160407.174518
+Made release permanent: <span class="s2">"20160407.174518"</span>
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>bin/fifo_server attach                                                                                                     
+Attaching to /tmp/erl_pipes/fifo_server/erlang.pipe.1 <span class="o">(</span>^D to <span class="nb">exit</span><span class="o">)</span>
+
+<span class="gp">(fifo_server@mkh-xps)3&gt; </span>application:which_applications<span class="o">()</span>.
+<span class="o">[{</span>sasl,<span class="s2">"SASL  CXC 138 11"</span>,<span class="s2">"2.4.1"</span><span class="o">}</span>,
+ <span class="o">{</span>fifo_server,<span class="s2">"FIFO TCP server"</span>,<span class="s2">"20160407-174518-relflow"</span><span class="o">}</span>,
+ <span class="o">{</span>lager,<span class="s2">"Erlang logging framework"</span>,<span class="s2">"3.0.2"</span><span class="o">}</span>,
+ <span class="o">{</span>goldrush,<span class="s2">"Erlang event stream processor"</span>,<span class="s2">"0.1.7"</span><span class="o">}</span>,
+ <span class="o">{</span>syntax_tools,<span class="s2">"Syntax tools"</span>,<span class="s2">"1.6.18"</span><span class="o">}</span>,
+ <span class="o">{</span>compiler,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"5.0.4"</span><span class="o">}</span>,
+ <span class="o">{</span>mkh_queue,<span class="s2">"FIFO queue application"</span>,<span class="s2">"0.1.0"</span><span class="o">}</span>,
+ <span class="o">{</span>stdlib,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"2.4"</span><span class="o">}</span>,
+ <span class="o">{</span>kernel,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"3.2"</span><span class="o">}]</span>
+<span class="gp">(fifo_server@mkh-xps)4&gt; </span>release_handler:which_releases<span class="o">()</span>.
+<span class="o">[{</span><span class="s2">"fifo_server"</span>,<span class="s2">"20160407.174518"</span>,
+  <span class="o">[</span><span class="s2">"stdlib-2.4"</span>,<span class="s2">"kernel-3.2"</span>,<span class="s2">"mkh_queue-0.1.0"</span>,
+   <span class="s2">"compiler-5.0.4"</span>,<span class="s2">"syntax_tools-1.6.18"</span>,<span class="s2">"goldrush-0.1.7"</span>,
+   <span class="s2">"lager-3.0.2"</span>,<span class="s2">"fifo_server-20160407-174518-relflow"</span>,
+   <span class="s2">"sasl-2.4.1"</span><span class="o">]</span>,
+  permanent<span class="o">}</span>,
+ <span class="o">{</span><span class="s2">"fifo_server"</span>,<span class="s2">"first-release"</span>,
+  <span class="o">[</span><span class="s2">"stdlib-2.4"</span>,<span class="s2">"kernel-3.2"</span>,<span class="s2">"mkh_queue-0.1.0"</span>,
+   <span class="s2">"compiler-5.0.4"</span>,<span class="s2">"syntax_tools-1.6.18"</span>,<span class="s2">"goldrush-0.1.7"</span>,
+   <span class="s2">"lager-3.0.2"</span>,<span class="s2">"fifo_server-0.1.0"</span>,<span class="s2">"sasl-2.4.1"</span><span class="o">]</span>,
+  old<span class="o">}]</span>
+<span class="gp">(fifo_server@mkh-xps)5&gt; </span>fifo_s
+fifo_s_utils       fifo_server_app    fifo_server_sup    
+<span class="gp">(fifo_server@mkh-xps)5&gt; </span>fifo_server_app:v<span class="o">()</span>.
+<span class="s2">"1.0.0"</span>
+<span class="gp">(fifo_server@mkh-xps)6&gt; </span><span class="o">[</span>Quit]
+mkh@mkh-xps:~/work/tmp/test_server<span class="err">$</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>now we can see new release &ldquo;20160407.174518&rdquo; in permanent state and we are can call new function v().
+So we are just did and install new release. Lets back to dev directory to make third release.
+Edit apps/fifo<em>server/src/fifo</em>server_app.erl to change line v() -&gt; &ldquo;1.0.0&rdquo; to v() -&gt; &ldquo;2.0.0&rdquo;. and commit changes.</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span><span class="nb">cd</span> ../fifo_server/
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>vim apps/fifo_server/src/fifo_server_app.erl
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>git commit -m <span class="s2">"changes for third release"</span> -a
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>./rebar3 as prod relflow -u <span class="s2">"v20160407.174518"</span>
+<span class="gp">===&gt; </span>Replace apps/fifo_server/ebin/fifo_server.appup
+<span class="gp">===&gt; </span>Rewriting vsn <span class="k">in </span>fifo_server.app.src
+<span class="gp">===&gt; </span>Rewriting release vsn <span class="k">in </span>rebar.config: 20160407.182624
+<span class="gp">===&gt; </span><span class="nv">$ </span>git add apps/fifo_server/ebin/fifo_server.appup
+<span class="gp">===&gt; </span><span class="nv">$ </span>git add apps/fifo_server/src/fifo_server.app.src
+<span class="gp">===&gt; </span><span class="nv">$ </span>git add rebar.config
+<span class="gp">===&gt; </span><span class="nv">$ </span>git commit -m<span class="s2">"relflow 20160407.174518 --&gt; 20160407.182624"</span>
+<span class="o">[</span>detached HEAD e396242] relflow 20160407.174518 --&gt; 20160407.182624
+ 3 files changed, 5 insertions<span class="o">(</span>+<span class="o">)</span>, 5 deletions<span class="o">(</span>-<span class="o">)</span>
+
+<span class="gp">===&gt; </span><span class="nv">$ </span>git tag -a <span class="s2">"v20160407.182624"</span> -m <span class="s2">"20160407.182624"</span>
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>./rebar3 as prod release relup tar -u <span class="s2">"20160407.174518"</span>
+<span class="gp">===&gt; </span>Verifying dependencies...
+<span class="gp">===&gt; </span>Compiling fifo_server
+<span class="gp">===&gt; </span>Starting relx build process ...
+<span class="gp">===&gt; </span>Resolving OTP Applications from directories:
+          /home/mkh/work/tmp/fifo_server/_build/prod/lib
+          /home/mkh/work/tmp/fifo_server/apps
+          /opt/r17.5/lib
+          /home/mkh/work/tmp/fifo_server/_build/prod/rel
+<span class="gp">===&gt; </span>Resolving available OTP Releases from directories:
+          /home/mkh/work/tmp/fifo_server/_build/prod/lib
+          /home/mkh/work/tmp/fifo_server/_build/prod/rel
+<span class="gp">===&gt; </span>Resolved fifo_server-20160407.182624
+<span class="gp">===&gt; </span>Including Erts from /opt/r17.5
+<span class="gp">===&gt; </span>release successfully created!
+<span class="gp">===&gt; </span>relup successfully created!
+<span class="gp">===&gt; </span>tarball /home/mkh/work/tmp/fifo_server/_build/prod/rel/fifo_server/fifo_server-20160407.182624.tar.gz successfully created!
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>mkdir ../test_server/releases/20160407.182624
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span>cp _build/prod/rel/fifo_server/fifo_server-20160407.182624.tar.gz  ../test_server/releases/20160407.182624/fifo_server.tar.gz
+<span class="gp">mkh@mkh-xps:~/work/tmp/fifo_server$ </span><span class="nb">cd</span> ../test_server/
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>bin/fifo_server install 20160407.182624
+Release 20160407.182624 not found, attempting to unpack releases/20160407.182624/fifo_server.tar.gz
+Unpacked successfully: <span class="s2">"20160407.182624"</span>
+Installed Release: 20160407.182624
+Made release permanent: <span class="s2">"20160407.182624"</span>
+<span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>bin/fifo_server attach                                                                                                     
+Attaching to /tmp/erl_pipes/fifo_server/erlang.pipe.1 <span class="o">(</span>^D to <span class="nb">exit</span><span class="o">)</span>
+
+<span class="gp">(fifo_server@mkh-xps)6&gt; </span>application:which_applications<span class="o">()</span>.
+<span class="o">[{</span>sasl,<span class="s2">"SASL  CXC 138 11"</span>,<span class="s2">"2.4.1"</span><span class="o">}</span>,
+ <span class="o">{</span>fifo_server,<span class="s2">"FIFO TCP server"</span>,<span class="s2">"20160407-182624-relflow"</span><span class="o">}</span>,
+ <span class="o">{</span>lager,<span class="s2">"Erlang logging framework"</span>,<span class="s2">"3.0.2"</span><span class="o">}</span>,
+ <span class="o">{</span>goldrush,<span class="s2">"Erlang event stream processor"</span>,<span class="s2">"0.1.7"</span><span class="o">}</span>,
+ <span class="o">{</span>syntax_tools,<span class="s2">"Syntax tools"</span>,<span class="s2">"1.6.18"</span><span class="o">}</span>,
+ <span class="o">{</span>compiler,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"5.0.4"</span><span class="o">}</span>,
+ <span class="o">{</span>mkh_queue,<span class="s2">"FIFO queue application"</span>,<span class="s2">"0.1.0"</span><span class="o">}</span>,
+ <span class="o">{</span>stdlib,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"2.4"</span><span class="o">}</span>,
+ <span class="o">{</span>kernel,<span class="s2">"ERTS  CXC 138 10"</span>,<span class="s2">"3.2"</span><span class="o">}]</span>
+<span class="gp">(fifo_server@mkh-xps)7&gt; </span>release_handler:which_releases<span class="o">()</span>.
+<span class="o">[{</span><span class="s2">"fifo_server"</span>,<span class="s2">"20160407.182624"</span>,
+  <span class="o">[</span><span class="s2">"stdlib-2.4"</span>,<span class="s2">"kernel-3.2"</span>,<span class="s2">"mkh_queue-0.1.0"</span>,
+   <span class="s2">"compiler-5.0.4"</span>,<span class="s2">"syntax_tools-1.6.18"</span>,<span class="s2">"goldrush-0.1.7"</span>,
+   <span class="s2">"lager-3.0.2"</span>,<span class="s2">"fifo_server-20160407-182624-relflow"</span>,
+   <span class="s2">"sasl-2.4.1"</span><span class="o">]</span>,
+  permanent<span class="o">}</span>,
+ <span class="o">{</span><span class="s2">"fifo_server"</span>,<span class="s2">"20160407.174518"</span>,
+  <span class="o">[</span><span class="s2">"stdlib-2.4"</span>,<span class="s2">"kernel-3.2"</span>,<span class="s2">"mkh_queue-0.1.0"</span>,
+   <span class="s2">"compiler-5.0.4"</span>,<span class="s2">"syntax_tools-1.6.18"</span>,<span class="s2">"goldrush-0.1.7"</span>,
+   <span class="s2">"lager-3.0.2"</span>,<span class="s2">"fifo_server-20160407-174518-relflow"</span>,
+   <span class="s2">"sasl-2.4.1"</span><span class="o">]</span>,
+  old<span class="o">}</span>,
+ <span class="o">{</span><span class="s2">"fifo_server"</span>,<span class="s2">"first-release"</span>,
+  <span class="o">[</span><span class="s2">"stdlib-2.4"</span>,<span class="s2">"kernel-3.2"</span>,<span class="s2">"mkh_queue-0.1.0"</span>,
+   <span class="s2">"compiler-5.0.4"</span>,<span class="s2">"syntax_tools-1.6.18"</span>,<span class="s2">"goldrush-0.1.7"</span>,
+   <span class="s2">"lager-3.0.2"</span>,<span class="s2">"fifo_server-0.1.0"</span>,<span class="s2">"sasl-2.4.1"</span><span class="o">]</span>,
+  old<span class="o">}]</span>
+<span class="o">(</span>fifo_server@mkh-xps<span class="o">)</span>8&gt;
+<span class="gp">(fifo_server@mkh-xps)8&gt; </span>fifo_server_app:v<span class="o">()</span>.             
+<span class="s2">"2.0.0"</span>
+<span class="gp">(fifo_server@mkh-xps)9&gt; </span><span class="o">[</span>Quit]
+mkh@mkh-xps:~/work/tmp/test_server<span class="err">$</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>so third release 20160407.182624  was succesfully build and installed. Lets try to downgrade to second release 20160407.174518:</p>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/tmp/test_server$ </span>bin/fifo_server downgrade 20160407.174518
+Release 20160407.174518 is marked old, switching to it.
+Installed Release: 20160407.174518
+Made release permanent: <span class="s2">"20160407.174518"</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<div id="disqus_thread"></div>
+
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+    this.page.url = '2016/04/07/erlang-rebar3-relflow-releases/'; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 'er3rr'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//mijkenator.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mijkenator/'>Mijkenator</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mijkenator/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=rebar3 and relflow&amp;amp;url=http://mijkenator.github.io/2016/04/07/erlang-rebar3-relflow-releases/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://mijkenator.github.io/2016/04/07/erlang-rebar3-relflow-releases/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://mijkenator.github.io/2016/04/07/erlang-rebar3-relflow-releases/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2016/03/16/project-euler-problem-45/'>
+<section class='post'>
+<h2>Project Euler Problem 45</h2>
+<p>Triangular, pentagonal, and hexagonal Triangle, pentagonal, and hexagonal numbers are generated by the following formula: Triangle Tn=n(n+1)/2 1, 3,&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/04/12/erlang-python-project-euler-46/'>
+<section class='post'>
+<h2>Project Euler problem 46</h2>
+<p>Goldbach&rsquo;s other conjecture It was proposed by Christian Goldbach that every odd composite number can be written as the&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>Mijkenator`s blog</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-69950918-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>

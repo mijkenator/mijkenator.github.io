@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mijkenator`s blog: Project Euler Problem 26</title>
+<meta name="keywords" content="project Euler, erlang, perl, python" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta content='Reciprocal cycles. A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are g...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='Mijkenator`s blog' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Project Euler Problem 26' property='og:title'>
+<meta content='Reciprocal cycles. A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are g...' property='og:description'>
+<meta content='http://mijkenator.github.io/2015/12/31/project-euler-problem-26/' property='og:url'>
+<meta content='2015-12-31' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Project Euler Problem 26' name='twitter:title'>
+<meta content='Reciprocal cycles. A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are g...' name='twitter:description'>
+<meta content='http://mijkenator.github.io/2015/12/31/project-euler-problem-26/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href="/stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-github' role='presentation'>
+<a href='https://github.com/mijkenator'>GitHub</a>
+</li>
+<li class='nav-contacts' role='presentation'>
+<a href='/contacts'>Contacts</a>
+</li>
+<li class='nav-project-euler' role='presentation'>
+<a href='/project-euler'>Project Euler</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Project Euler Problem 26</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-12-31'>
+31 December 2015
+</time>
+on <a href='/tag/project-euler/'>project euler</a>, <a href='/tag/erlang/'>erlang</a>, <a href='/tag/python/'>python</a>
+</section>
+</header>
+<section class='post-content'><p><b>Reciprocal cycles.</b></p>
+
+<p>A unit fraction contains 1 in the numerator. The decimal representation of the unit fractions with denominators 2 to 10 are given:<br>
+<pre>
+1/2  =  0.5
+1/3  =  0.(3)
+1/4  =  0.25
+1/5  =  0.2
+1/6  =  0.1(6)
+1/7  =  0.(142857)
+1/8  =  0.125
+1/9  =  0.(1)
+1/10 =  0.1
+</pre></p>
+
+<p></p>
+
+<p>Where 0.1(6) means 0.166666&hellip;, and has a 1-digit recurring cycle. It can be seen that 1/7 has a 6-digit recurring cycle.<br>
+Find the value of d &lt; 1000 for which 1/d contains the longest recurring cycle in its decimal fraction part.<br></p>
+
+<p><a rel="nofollow" href="https://projecteuler.net/problem=26">Link to original description</a><br/>
+<a rel="nofollow" href="https://github.com/mijkenator/pr_euler/tree/master/p26">Source code examples on Github</a><br></p>
+
+<p>brutforce solution with erlang:</p>
+<div class="highlight erlang"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre></td><td class="code"><pre><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">escript</span>
+<span class="c">%% -*- erlang -*-
+%%! -smp enable -sname p26
+% vim:syn=erlang
+</span>
+<span class="p">-</span><span class="ni">mode</span><span class="p">(</span><span class="n">compile</span><span class="p">).</span>
+
+<span class="nf">main</span><span class="p">(_)</span> <span class="o">-&gt;</span>
+    <span class="p">{_,</span><span class="nv">Answer</span><span class="p">}</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">last</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">sort</span><span class="p">([</span> <span class="nf">test26</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="p">[])</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">10000</span><span class="p">)])),</span>
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Answer: </span><span class="si">~p</span><span class="s"> </span><span class="si">~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Answer</span><span class="p">]).</span>
+
+<span class="nf">test26</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span> <span class="p">[])</span>      <span class="o">-&gt;</span> <span class="nf">test26</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span> <span class="p">[</span><span class="nf">inc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span> <span class="ow">rem</span> <span class="nv">N</span><span class="p">]);</span>
+<span class="nf">test26</span><span class="p">(_,</span> <span class="p">[</span><span class="mi">0</span><span class="p">|_])</span>   <span class="o">-&gt;</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nf">test26</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span> <span class="p">[</span><span class="nv">H</span><span class="p">|_]</span><span class="o">=</span><span class="nv">L</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">D</span> <span class="o">=</span> <span class="nf">inc</span><span class="p">(</span><span class="nv">H</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span> <span class="ow">rem</span> <span class="nv">N</span><span class="p">,</span>
+    <span class="k">case</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">member</span><span class="p">(</span><span class="nv">D</span><span class="p">,</span> <span class="nv">L</span><span class="p">)</span> <span class="k">of</span>
+        <span class="n">true</span>  <span class="o">-&gt;</span> <span class="p">{</span><span class="nb">length</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="o">-</span> <span class="nf">indx</span><span class="p">(</span><span class="nv">D</span><span class="p">,</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">reverse</span><span class="p">(</span><span class="nv">L</span><span class="p">),</span> <span class="mi">0</span><span class="p">),</span> <span class="nv">N</span><span class="p">}</span>
+        <span class="p">;_</span> <span class="o">-&gt;</span> <span class="nf">test26</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span> <span class="p">[</span><span class="nv">D</span> <span class="p">|</span> <span class="nv">L</span><span class="p">])</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">indx</span><span class="p">(</span><span class="nv">D</span><span class="p">,</span> <span class="p">[</span><span class="nv">D</span><span class="p">|_],</span> <span class="nv">I</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">I</span><span class="p">;</span>
+<span class="nf">indx</span><span class="p">(</span><span class="nv">D</span><span class="p">,</span> <span class="p">[_|</span><span class="nv">T</span><span class="p">],</span> <span class="nv">I</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">indx</span><span class="p">(</span><span class="nv">D</span><span class="p">,</span> <span class="nv">T</span><span class="p">,</span> <span class="nv">I</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span>
+
+<span class="nf">inc</span><span class="p">(</span><span class="nv">H</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span> <span class="k">when</span> <span class="nv">H</span> <span class="o">&gt;=</span> <span class="nv">N</span> <span class="o">-&gt;</span> <span class="nv">H</span><span class="p">;</span>
+<span class="nf">inc</span><span class="p">(</span><span class="nv">H</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">inc</span><span class="p">(</span><span class="nv">H</span><span class="o">*</span><span class="mi">10</span><span class="p">,</span> <span class="nv">N</span><span class="p">).</span>
+</pre></td></tr></tbody></table>
+</div>
+
+<p>After that i found there is much effective algorithm for it. Good explanation <a rel="nofollow" href="http://eli.thegreenplace.net/2009/02/25/project-euler-problem-26">here</a>.
+It is again about prime numbers and <a rel="nofollow" href="http://mathworld.wolfram.com/MultiplicativeOrder.html">multiplicative order of the denominator</a>.<br></p>
+
+<p>Here python realization of this algorithm (without primes):</p>
+<div class="highlight python"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12</pre></td><td class="code"><pre><span class="c">#!/usr/bin/python3</span>
+
+<span class="k">def</span> <span class="nf">recurring_cycle</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">if</span> <span class="mi">1</span> <span class="o">==</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">d</span><span class="p">)</span>
+
+<span class="n">Answer</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">recurring_cycle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1001</span><span class="p">)],</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">tup</span><span class="p">:</span> <span class="n">tup</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Answer </span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="n">Answer</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table>
+</div>
+
+<p>and here with primes:</p>
+<div class="highlight python"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17</pre></td><td class="code"><pre><span class="c">#!/usr/bin/python</span>
+
+<span class="k">def</span> <span class="nf">prime_sieve</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">sieve</span> <span class="o">=</span> <span class="p">[</span><span class="bp">True</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="nb">int</span><span class="p">(</span><span class="n">n</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">sieve</span><span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="n">sieve</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">i</span><span class="o">/</span><span class="mi">2</span><span class="p">::</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">False</span><span class="p">]</span> <span class="o">*</span> <span class="p">((</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="o">*</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">sieve</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">prime_sieve</span><span class="p">(</span><span class="mi">1000</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">period</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">period</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">d</span><span class="o">-</span><span class="mi">1</span> <span class="o">==</span> <span class="n">period</span><span class="p">:</span> <span class="k">break</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">"Answer ="</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+</pre></td></tr></tbody></table>
+</div>
+
+<p>After i tryed to do same thing with erlang:</p>
+<div class="highlight erlang"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82</pre></td><td class="code"><pre><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">escript</span>
+<span class="c">%% -*- erlang -*-
+%%! -smp enable -sname p26
+% vim:syn=erlang
+</span>
+<span class="p">-</span><span class="ni">mode</span><span class="p">(</span><span class="n">compile</span><span class="p">).</span>
+
+<span class="nf">main</span><span class="p">(_)</span> <span class="o">-&gt;</span> 
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Answer </span><span class="si">~p</span><span class="s"> </span><span class="si">~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nf">test26</span><span class="p">()]).</span>
+
+<span class="nf">test26</span><span class="p">()</span> <span class="o">-&gt;</span> 
+    <span class="nb">element</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nn">lists</span><span class="p">:</span><span class="nf">last</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">sort</span><span class="p">(</span>
+        <span class="p">[{</span><span class="nf">test26i</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nv">P</span><span class="p">),</span><span class="nv">P</span><span class="p">}</span> <span class="p">||</span> <span class="nv">P</span> <span class="o">&lt;-</span> <span class="nf">get_primes</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span> <span class="nv">P</span><span class="o">=/=</span><span class="mi">2</span><span class="p">,</span><span class="nv">P</span><span class="o">=/=</span><span class="mi">5</span><span class="p">]))).</span>
+
+<span class="nf">test26i</span><span class="p">(</span><span class="nv">I</span><span class="p">,</span> <span class="nv">P</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nf">pow</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="nv">I</span><span class="p">)</span> <span class="ow">rem</span> <span class="nv">P</span> <span class="k">of</span>
+        <span class="mi">1</span>  <span class="o">-&gt;</span> <span class="nv">I</span>
+        <span class="p">;_</span> <span class="o">-&gt;</span> <span class="nf">test26i</span><span class="p">(</span><span class="nv">I</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nv">P</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">pow</span><span class="p">(_,</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nf">pow</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">X</span><span class="p">;</span>
+<span class="nf">pow</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">Y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">X</span> <span class="o">*</span> <span class="nf">pow</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">Y</span><span class="o">-</span><span class="mi">1</span><span class="p">).</span>
+
+<span class="c">%----------------------------------------------- prime generator from Project Euler 10 (version 5 ---------------------------)
+</span><span class="nf">get_primes</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nn">ets</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="p">[</span><span class="n">public</span><span class="p">,</span> <span class="n">named_table</span><span class="p">,</span> <span class="p">{</span><span class="n">write_concurrency</span><span class="p">,</span> <span class="n">true</span><span class="p">}</span> <span class="p">]),</span>
+    <span class="nn">ets</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="p">[</span><span class="n">public</span><span class="p">,</span> <span class="n">named_table</span><span class="p">,</span> <span class="p">{</span><span class="n">write_concurrency</span><span class="p">,</span> <span class="n">true</span><span class="p">}]),</span>
+    <span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">),</span>
+    <span class="nf">primes_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">),</span>
+    <span class="nn">lists</span><span class="p">:</span><span class="nf">sort</span><span class="p">([</span><span class="nv">P</span> <span class="p">||</span> <span class="p">{</span><span class="nv">P</span><span class="p">,_}</span> <span class="o">&lt;-</span><span class="nn">ets</span><span class="p">:</span><span class="nf">tab2list</span><span class="p">(</span><span class="n">prim</span><span class="p">)]).</span>
+
+<span class="nf">primes_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nn">erlang</span><span class="p">:</span><span class="nb">system_info</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)</span> <span class="k">of</span>
+        <span class="mi">1</span> <span class="o">-&gt;</span> <span class="nf">primes</span><span class="p">(</span><span class="nv">N</span><span class="p">);</span>
+        <span class="nv">C</span> <span class="o">-&gt;</span> <span class="nf">launch_primes</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nv">C</span><span class="p">),</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">,</span> <span class="nv">N</span> <span class="ow">div</span> <span class="nv">C</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+<span class="nf">launch_primes</span><span class="p">([</span><span class="mi">1</span><span class="p">|</span><span class="nv">T</span><span class="p">],</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">,</span> <span class="nv">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">P</span> <span class="o">=</span> <span class="nf">self</span><span class="p">(),</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span><span class="o">-&gt;</span> <span class="nf">primes</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="nv">R</span><span class="p">),</span> <span class="nv">P</span> <span class="o">!</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="n">prm</span><span class="p">}</span> <span class="k">end</span><span class="p">),</span> <span class="nf">launch_primes</span><span class="p">(</span><span class="nv">T</span><span class="p">,</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">,</span> <span class="nv">R</span><span class="p">);</span>
+<span class="nf">launch_primes</span><span class="p">([</span><span class="nv">H</span><span class="p">|[]],</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">,</span> <span class="nv">R</span><span class="p">)</span><span class="o">-&gt;</span> <span class="nv">P</span> <span class="o">=</span> <span class="nf">self</span><span class="p">(),</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span><span class="o">-&gt;</span> <span class="nf">primes</span><span class="p">(</span><span class="nv">R</span><span class="o">*</span><span class="p">(</span><span class="nv">H</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nv">N</span><span class="p">),</span> <span class="nv">P</span> <span class="o">!</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="n">prm</span><span class="p">}</span> <span class="k">end</span><span class="p">),</span> <span class="nf">wait_primes</span><span class="p">(</span><span class="nv">C</span><span class="p">);</span>
+<span class="nf">launch_primes</span><span class="p">([</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">],</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">,</span> <span class="nv">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">P</span> <span class="o">=</span> <span class="nf">self</span><span class="p">(),</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span><span class="o">-&gt;</span> <span class="nf">primes</span><span class="p">(</span><span class="nv">R</span><span class="o">*</span><span class="p">(</span><span class="nv">H</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nv">R</span><span class="o">*</span><span class="nv">H</span><span class="p">),</span> <span class="nv">P</span> <span class="o">!</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="n">prm</span><span class="p">}</span> <span class="k">end</span><span class="p">),</span> <span class="nf">launch_primes</span><span class="p">(</span><span class="nv">T</span><span class="p">,</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">N</span><span class="p">,</span> <span class="nv">R</span><span class="p">).</span>
+
+<span class="nf">wait_primes</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ok</span><span class="p">;</span>
+<span class="nf">wait_primes</span><span class="p">(</span><span class="nv">C</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="n">prm</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nf">wait_primes</span><span class="p">(</span><span class="nv">C</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">after</span> <span class="mi">1000</span>    <span class="o">-&gt;</span> <span class="nf">wait_primes</span><span class="p">(</span><span class="nv">C</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">primes</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">primes</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nv">N</span><span class="p">).</span>
+<span class="nf">primes</span><span class="p">(</span><span class="nv">I</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span> <span class="k">when</span> <span class="nv">I</span> <span class="o">=&lt;</span> <span class="nv">N</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nn">ets</span><span class="p">:</span><span class="nf">lookup</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="nv">I</span><span class="p">)</span> <span class="k">of</span>
+        <span class="p">[]</span> <span class="o">-&gt;</span> <span class="nn">ets</span><span class="p">:</span><span class="nf">insert</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="p">{</span><span class="nv">I</span><span class="p">,</span><span class="mi">1</span><span class="p">})</span>
+        <span class="p">;_</span> <span class="o">-&gt;</span> <span class="n">ok</span>
+    <span class="k">end</span><span class="p">,</span>
+    <span class="nf">primes</span><span class="p">(</span><span class="nv">I</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nv">N</span><span class="p">);</span>
+<span class="nf">primes</span><span class="p">(</span><span class="nv">I</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span> <span class="k">when</span> <span class="nv">I</span> <span class="o">&gt;</span> <span class="nv">N</span> <span class="o">-&gt;</span> <span class="n">ok</span><span class="p">.</span>
+
+
+<span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="nn">math</span><span class="p">:</span><span class="nf">sqrt</span><span class="p">(</span><span class="nv">N</span><span class="p">)),</span><span class="nn">erlang</span><span class="p">:</span><span class="nb">system_info</span><span class="p">(</span><span class="n">schedulers</span><span class="p">)).</span>
+<span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">I</span><span class="p">,</span><span class="nv">M</span><span class="p">,</span><span class="nv">C</span><span class="p">)</span> <span class="k">when</span> <span class="nv">I</span> <span class="o">=&lt;</span> <span class="nv">M</span><span class="p">,</span> <span class="nv">C</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">-&gt;</span>
+    <span class="nv">C1</span> <span class="o">=</span> <span class="k">case</span> <span class="nn">ets</span><span class="p">:</span><span class="nf">lookup</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="nv">I</span><span class="p">)</span> <span class="k">of</span>
+        <span class="p">[]</span> <span class="o">-&gt;</span> <span class="nf">comp_i_mc</span><span class="p">(</span><span class="nv">I</span><span class="o">*</span><span class="nv">I</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">N</span><span class="p">),</span> <span class="nv">C</span><span class="o">-</span><span class="mi">1</span>
+        <span class="p">;_</span> <span class="o">-&gt;</span> <span class="nv">C</span>
+    <span class="k">end</span><span class="p">,</span>
+    <span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">I</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nv">M</span><span class="p">,</span><span class="nv">C1</span><span class="p">);</span>
+<span class="nf">composite_mc</span><span class="p">(_,</span><span class="nv">I</span><span class="p">,</span><span class="nv">M</span><span class="p">,_)</span> <span class="k">when</span> <span class="nv">I</span> <span class="o">&gt;</span> <span class="nv">M</span> <span class="o">-&gt;</span> <span class="n">ok</span><span class="p">;</span>
+<span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">I</span><span class="p">,</span><span class="nv">M</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="n">cim</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">I</span><span class="p">,</span><span class="nv">M</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">after</span> <span class="mi">1000</span>    <span class="o">-&gt;</span> <span class="nf">composite_mc</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">I</span><span class="p">,</span><span class="nv">M</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">comp_i_mc</span><span class="p">(</span><span class="nv">J</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> 
+    <span class="nv">Parent</span> <span class="o">=</span> <span class="nf">self</span><span class="p">(),</span>
+    <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span>
+        <span class="nf">comp_i</span><span class="p">(</span><span class="nv">J</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">N</span><span class="p">),</span>
+        <span class="nv">Parent</span> <span class="o">!</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="n">cim</span><span class="p">}</span>
+    <span class="k">end</span><span class="p">).</span>
+
+<span class="nf">comp_i</span><span class="p">(</span><span class="nv">J</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">N</span><span class="p">)</span> <span class="k">when</span> <span class="nv">J</span> <span class="o">=&lt;</span> <span class="nv">N</span> <span class="o">-&gt;</span> <span class="nn">ets</span><span class="p">:</span><span class="nf">insert</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span> <span class="p">{</span><span class="nv">J</span><span class="p">,</span> <span class="mi">1</span><span class="p">}),</span> <span class="nf">comp_i</span><span class="p">(</span><span class="nv">J</span><span class="o">+</span><span class="nv">I</span><span class="p">,</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">N</span><span class="p">);</span>
+<span class="nf">comp_i</span><span class="p">(</span><span class="nv">J</span><span class="p">,</span> <span class="p">_,</span> <span class="nv">N</span><span class="p">)</span> <span class="k">when</span> <span class="nv">J</span> <span class="o">&gt;</span> <span class="nv">N</span> <span class="o">-&gt;</span> <span class="n">ok</span><span class="p">.</span>
+
+</pre></td></tr></tbody></table>
+</div>
+
+<p>Unfortunately there isnt fast implementation pow erlang function for big integers (math:pow limited by double float). So i implement
+own pow function, but it super slow. Python instead have fast pow function, but python also have pow(X,Y,D) , it is super effective
+implementation of pow(X,Y) % D. So python implemenation thousand times faster erlang.</p>
+
+<div id="disqus_thread"></div>
+
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+    this.page.url = '2015/12/31/project-euler-problem-26/'; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 'pep26'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//mijkenator.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mijkenator/'>Mijkenator</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mijkenator/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Project Euler Problem 26&amp;amp;url=http://mijkenator.github.io/2015/12/31/project-euler-problem-26/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://mijkenator.github.io/2015/12/31/project-euler-problem-26/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://mijkenator.github.io/2015/12/31/project-euler-problem-26/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2015/12/28/project-euler-problem-25/'>
+<section class='post'>
+<h2>Project Euler Problem 25</h2>
+<p>1000-digit Fibonacci number. The Fibonacci sequence is defined by the recurrence relation: F(n) = F(n−1) + F(n−2), where F(1)&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2016/01/04/project-euler-problem-27/'>
+<section class='post'>
+<h2>Project Euler Problem 27</h2>
+<p>Quadratic primes. Euler discovered the remarkable quadratic formula: n² + n + 41 It turns out that the formula&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>Mijkenator`s blog</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-69950918-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>

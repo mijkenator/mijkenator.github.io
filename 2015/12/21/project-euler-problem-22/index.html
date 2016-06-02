@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mijkenator`s blog: Project Euler Problem 22</title>
+<meta name="keywords" content="project Euler, erlang, perl, python" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta content='Names scores. Using names.txt (right click and &amp;lsquo;Save Link/Target As&amp;hellip;&amp;rsquo;), a 46K text file containing over five-thousand first n...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='Mijkenator`s blog' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Project Euler Problem 22' property='og:title'>
+<meta content='Names scores. Using names.txt (right click and &amp;lsquo;Save Link/Target As&amp;hellip;&amp;rsquo;), a 46K text file containing over five-thousand first n...' property='og:description'>
+<meta content='http://mijkenator.github.io/2015/12/21/project-euler-problem-22/' property='og:url'>
+<meta content='2015-12-21' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Project Euler Problem 22' name='twitter:title'>
+<meta content='Names scores. Using names.txt (right click and &amp;lsquo;Save Link/Target As&amp;hellip;&amp;rsquo;), a 46K text file containing over five-thousand first n...' name='twitter:description'>
+<meta content='http://mijkenator.github.io/2015/12/21/project-euler-problem-22/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href="/stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-github' role='presentation'>
+<a href='https://github.com/mijkenator'>GitHub</a>
+</li>
+<li class='nav-contacts' role='presentation'>
+<a href='/contacts'>Contacts</a>
+</li>
+<li class='nav-project-euler' role='presentation'>
+<a href='/project-euler'>Project Euler</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Project Euler Problem 22</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-12-21'>
+21 December 2015
+</time>
+on <a href='/tag/project-euler/'>project euler</a>, <a href='/tag/erlang/'>erlang</a>, <a href='/tag/python/'>python</a>
+</section>
+</header>
+<section class='post-content'><p><b>Names scores.</b>
+Using names.txt (right click and &lsquo;Save Link/Target As&hellip;&rsquo;), a 46K text file containing over five-thousand first names, begin by sorting it into alphabetical order. Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score.<br></p>
+
+<p>For example, when the list is sorted into alphabetical order, COLIN, which is worth 3 + 15 + 12 + 9 + 14 = 53, is the 938th name in the list. So, COLIN would obtain a score of 938 × 53 = 49714.<br></p>
+
+<p>What is the total of all the name scores in the file?<br></p>
+
+<p><a rel="nofollow" href="https://projecteuler.net/problem=22">Link to original description</a><br/>
+<a rel="nofollow" href="https://github.com/mijkenator/pr_euler/tree/master/p22">Source code examples on Github</a><br></p>
+
+<h2>Erlang version</h2>
+<div class="highlight erlang"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></td><td class="code"><pre><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">escript</span>
+<span class="c">%% -*- erlang -*-
+%%! -smp enable -sname p22
+% vim:syn=erlang
+</span>
+<span class="p">-</span><span class="ni">mode</span><span class="p">(</span><span class="n">compile</span><span class="p">).</span>
+
+<span class="nf">worth</span><span class="p">(</span><span class="nv">W</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">foldl</span><span class="p">(</span><span class="k">fun</span><span class="p">(</span><span class="nv">E</span><span class="p">,</span><span class="nv">A</span><span class="p">)</span><span class="o">-&gt;</span> <span class="nv">A</span> <span class="o">+</span> <span class="nv">E</span> <span class="o">-</span> <span class="nb">hd</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">end</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nv">W</span><span class="p">).</span>
+
+<span class="nf">main</span><span class="p">(_)</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Data</span><span class="p">}</span> <span class="o">=</span> <span class="nn">file</span><span class="p">:</span><span class="nf">read_file</span><span class="p">(</span><span class="s">"p022_names.txt"</span><span class="p">),</span>
+    <span class="nv">S</span> <span class="o">=</span> <span class="nb">size</span><span class="p">(</span><span class="nv">Data</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span>
+    <span class="o">&lt;&lt;</span><span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="p">,</span> <span class="nv">D</span><span class="p">:</span><span class="nv">S</span><span class="o">/</span><span class="n">binary</span><span class="p">,</span> <span class="s">"</span><span class="se">\"</span><span class="s">"</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nv">Data</span><span class="p">,</span>
+    <span class="nv">L</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">sort</span><span class="p">(</span><span class="nn">binary</span><span class="p">:</span><span class="nf">split</span><span class="p">(</span><span class="nv">D</span><span class="p">,</span><span class="o">&lt;&lt;</span><span class="s">"</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">"</span><span class="o">&gt;&gt;</span><span class="p">,[</span><span class="n">global</span><span class="p">])),</span>
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Answer: </span><span class="si">~p</span><span class="s"> </span><span class="si">~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nf">sum</span><span class="p">(</span><span class="nv">L</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)]).</span>
+
+<span class="nf">sum</span><span class="p">([],</span> <span class="p">_,</span> <span class="nv">A</span><span class="p">)</span>    <span class="o">-&gt;</span> <span class="nv">A</span><span class="p">;</span>
+<span class="nf">sum</span><span class="p">([</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">],</span> <span class="nv">I</span><span class="p">,</span> <span class="nv">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">sum</span><span class="p">(</span><span class="nv">T</span><span class="p">,</span><span class="nv">I</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nv">A</span><span class="o">+</span><span class="nf">worth</span><span class="p">(</span><span class="nb">binary_to_list</span><span class="p">(</span><span class="nv">H</span><span class="p">))</span><span class="o">*</span><span class="nv">I</span><span class="p">).</span>
+
+</pre></td></tr></tbody></table>
+</div>
+
+<h2>Python version</h2>
+<div class="highlight python"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12</pre></td><td class="code"><pre><span class="c">#!/usr/bin/python</span>
+
+<span class="k">def</span> <span class="nf">worth</span><span class="p">(</span><span class="n">name</span><span class="p">):</span> <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span> <span class="o">-</span> <span class="nb">ord</span><span class="p">(</span><span class="s">'A'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="n">name</span><span class="p">)</span>
+
+<span class="n">txt</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"p022_names.txt"</span><span class="p">)</span>
+<span class="n">fl</span>  <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">read</span><span class="p">()[</span><span class="mi">1</span><span class="p">:][:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'","'</span><span class="p">)</span>
+<span class="n">fl</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">((</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">worth</span><span class="p">(</span><span class="n">fl</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">fl</span><span class="p">)))</span>
+
+<span class="k">print</span> <span class="s">"Answer </span><span class="si">%</span><span class="s">s "</span> <span class="o">%</span> <span class="n">answer</span>
+
+</pre></td></tr></tbody></table>
+</div>
+
+<div id="disqus_thread"></div>
+
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+    this.page.url = '2015/12/21/project-euler-problem-22/'; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 'pep22'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//mijkenator.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mijkenator/'>Mijkenator</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mijkenator/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Project Euler Problem 22&amp;amp;url=http://mijkenator.github.io/2015/12/21/project-euler-problem-22/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://mijkenator.github.io/2015/12/21/project-euler-problem-22/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://mijkenator.github.io/2015/12/21/project-euler-problem-22/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2015/12/18/project-euler-problem-21/'>
+<section class='post'>
+<h2>Project Euler Problem 21</h2>
+<p>Amicable numbers. Let d(n) be defined as the sum of proper divisors of n (numbers less than n which&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2015/12/22/project-euler-problem-23/'>
+<section class='post'>
+<h2>Project Euler Problem 23</h2>
+<p>Non-abundant sums. A perfect number is a number for which the sum of its proper divisors is exactly equal&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>Mijkenator`s blog</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-69950918-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mijkenator`s blog: release</title>
+  <subtitle>Posts tagged with release</subtitle>
+  <id>http://mijkenator.github.io</id>
+  <link href="http://mijkenator.github.io"/>
+  <link href="http://mijkenator.github.io/tag/release/feed.xml" rel="self"/>
+  <updated>2016-05-31T20:16:00+00:00</updated>
+  <author>
+    <name>Mijkenator</name>
+  </author>
+  <entry>
+    <title>rebar3 and relflow</title>
+    <link rel="alternate" href="http://mijkenator.github.io/2016/04/07/erlang-rebar3-relflow-releases/"/>
+    <id>http://mijkenator.github.io/2016/04/07/erlang-rebar3-relflow-releases/</id>
+    <published>2016-04-07T14:29:00+00:00</published>
+    <updated>2016-05-22T21:33:30+00:00</updated>
+    <author>
+      <name>Mijkenator</name>
+    </author>
+    <summary type="html">Rebar3 and relflow and release upgrade and downgrade 
+
+Simple how-to with examples of build, upgrade and downgrade with rebar3 and relflow plugin. 
+
+</summary>
+  </entry>
+</feed>

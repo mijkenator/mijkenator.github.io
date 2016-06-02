@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mijkenator`s blog: interview question</title>
+  <subtitle>Posts tagged with interview question</subtitle>
+  <id>http://mijkenator.github.io</id>
+  <link href="http://mijkenator.github.io"/>
+  <link href="http://mijkenator.github.io/tag/interview-question/feed.xml" rel="self"/>
+  <updated>2016-05-31T20:16:00+00:00</updated>
+  <author>
+    <name>Mijkenator</name>
+  </author>
+  <entry>
+    <title>Coin denomimation algorithm</title>
+    <link rel="alternate" href="http://mijkenator.github.io/2016/02/16/interview-question-1/"/>
+    <id>http://mijkenator.github.io/2016/02/16/interview-question-1/</id>
+    <published>2016-02-16T18:18:00+00:00</published>
+    <updated>2016-05-22T21:33:30+00:00</updated>
+    <author>
+      <name>Mijkenator</name>
+    </author>
+    <summary type="html">Coin challenge
+
+How many different ways can N be made using any number of denominators.
+
+For example we have denominators list: [1,3,6]. So how many ways we can made number 4 with any numbers of [1,3,6].
+
+Answer: [1,1,1,1], [3,1], [1,3].
+
+</summary>
+  </entry>
+</feed>

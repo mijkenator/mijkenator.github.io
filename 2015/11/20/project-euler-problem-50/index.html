@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Mijkenator`s blog: Project Euler Problem 50</title>
+<meta name="keywords" content="project Euler, erlang, perl, python" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta content='Consecutive prime sum The prime 41, can be written as the sum of six consecutive primes: 41 = 2 + 3 + 5 + 7 + 11 + 13 This is the longest sum of...' name='description'>
+<meta charset='utf-8'>
+<meta content='width=device-width, initial-scale=1.0' name='viewport'>
+<meta content='IE=edge' http-equiv='X-UA-Compatible'>
+<meta content='True' name='HandheldFriendly'>
+<meta content='Mijkenator`s blog' property='og:site_name'>
+<meta content='article' property='og:type'>
+<meta content='Project Euler Problem 50' property='og:title'>
+<meta content='Consecutive prime sum The prime 41, can be written as the sum of six consecutive primes: 41 = 2 + 3 + 5 + 7 + 11 + 13 This is the longest sum of...' property='og:description'>
+<meta content='http://mijkenator.github.io/2015/11/20/project-euler-problem-50/' property='og:url'>
+<meta content='2015-11-20' property='article:published_time'>
+<meta content='summary' name='twitter:card'>
+<meta content='Project Euler Problem 50' name='twitter:title'>
+<meta content='Consecutive prime sum The prime 41, can be written as the sum of six consecutive primes: 41 = 2 + 3 + 5 + 7 + 11 + 13 This is the longest sum of...' name='twitter:description'>
+<meta content='http://mijkenator.github.io/2015/11/20/project-euler-problem-50/' name='twitter:url'>
+<link rel="alternate" type="application/atom+xml" title="Atom Feed" href="/feed.xml" />
+<link href="/images/favicon.ico" rel="icon" type="image/ico" />
+<link href="/stylesheets/application.css" rel="stylesheet" />
+<link href='//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400' rel='stylesheet' type='text/css'>
+</head>
+<body class='post-template nav-closed'>
+<div class='nav'>
+<h3 class='nav-title'>Menu</h3>
+<a class='nav-close' href='#'>
+<span class='hidden'>Close</span>
+</a>
+<ul>
+<li class='nav-home' role='presentation'>
+<a href='/'>Home</a>
+</li>
+<li class='nav-github' role='presentation'>
+<a href='https://github.com/mijkenator'>GitHub</a>
+</li>
+<li class='nav-contacts' role='presentation'>
+<a href='/contacts'>Contacts</a>
+</li>
+<li class='nav-project-euler' role='presentation'>
+<a href='/project-euler'>Project Euler</a>
+</li>
+</ul>
+<a class='subscribe-button icon-feed' href='/feed.xml'>Subscribe</a>
+</div>
+<span class='nav-cover'></span>
+
+<div class='site-wrapper'>
+<header class='main-header no-cover post-head'>
+<nav class='main-nav clearfix'>
+<a class='menu-button icon-menu' href='#'>
+<span class='word'>Menu</span>
+</a>
+</nav>
+</header>
+<main class='content' role='main'>
+<article class='post'>
+<header class='post-header'>
+<h1 class='post-title'>Project Euler Problem 50</h1>
+<section class='post-meta'>
+<time class='post-date' datetime='2015-11-20'>
+20 November 2015
+</time>
+on <a href='/tag/project-euler/'>project euler</a>, <a href='/tag/erlang/'>erlang</a>, <a href='/tag/python/'>python</a>
+</section>
+</header>
+<section class='post-content'><p><b>Consecutive prime sum</b></p>
+
+<p>The prime 41, can be written as the sum of six consecutive primes:<br/>
+41 = 2 + 3 + 5 + 7 + 11 + 13<br/>
+This is the longest sum of consecutive primes that adds to a prime below one-hundred.<br/>
+The longest sum of consecutive primes below one-thousand that adds to a prime, contains 21 terms, and is equal to 953.<br/>
+Which prime, below one-million, can be written as the sum of the most consecutive primes?<br/>
+<a rel="nofollow" href="https://projecteuler.net/problem=50">Link to original description</a><br/>
+<a rel="nofollow" href="https://github.com/mijkenator/pr_euler/tree/master/p50">Source code examples on Github</a></p>
+
+<h2>Erlang version 1</h2>
+<div class="highlight erlang"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre></td><td class="code"><pre><span class="err">#</span><span class="o">!/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">env</span> <span class="n">escript</span>
+<span class="c">%% -*- erlang -*-
+%%! -smp enable -sname p50
+% vim:syn=erlang
+</span>
+<span class="p">-</span><span class="ni">mode</span><span class="p">(</span><span class="n">compile</span><span class="p">).</span>
+
+<span class="nf">main</span><span class="p">(_)</span> <span class="o">-&gt;</span>
+    <span class="nv">PL</span> <span class="o">=</span> <span class="nf">prime</span><span class="p">(</span><span class="mi">5000</span><span class="p">),</span>
+    <span class="nv">Answer</span> <span class="o">=</span> <span class="nf">calc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nv">PL</span><span class="p">,</span><span class="nv">PL</span><span class="p">,</span><span class="mi">0</span><span class="p">,[]),</span>
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Answer </span><span class="si">~p</span><span class="s"> </span><span class="si">~n</span><span class="s">"</span><span class="p">,[</span> <span class="nv">Answer</span> <span class="p">]).</span>
+
+<span class="nf">calc</span><span class="p">(_,[],_,_,</span><span class="nv">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">fetch_results</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">reverse</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">usort</span><span class="p">(</span><span class="nv">A</span><span class="p">)));</span>
+<span class="nf">calc</span><span class="p">(</span><span class="nv">N</span><span class="p">,[</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">],</span> <span class="nv">O</span><span class="p">,</span> <span class="nv">R</span><span class="p">,</span> <span class="nv">A</span><span class="p">)</span> <span class="k">when</span> <span class="nv">R</span><span class="o">+</span><span class="nv">H</span> <span class="o">&lt;</span> <span class="mi">1000000</span> <span class="o">-&gt;</span> <span class="nf">calc</span><span class="p">(</span><span class="nv">N</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="nv">T</span><span class="p">,</span><span class="nv">O</span><span class="p">,</span><span class="nv">R</span><span class="o">+</span><span class="nv">H</span><span class="p">,</span> <span class="nv">A</span><span class="p">);</span>
+<span class="nf">calc</span><span class="p">(</span><span class="nv">N</span><span class="p">,_,</span><span class="nv">O</span><span class="p">,</span> <span class="nv">R</span><span class="p">,</span> <span class="nv">A</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">L</span> <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">sublist</span><span class="p">(</span><span class="nv">O</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="nb">length</span><span class="p">(</span><span class="nv">O</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">),</span><span class="nf">calc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nv">L</span><span class="p">,</span><span class="nv">L</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="nv">A</span> <span class="o">++</span> <span class="p">[{</span><span class="nv">N</span><span class="p">,</span> <span class="nv">R</span><span class="p">}]).</span>
+
+
+<span class="nf">fetch_results</span><span class="p">([])</span> <span class="o">-&gt;</span> <span class="p">[];</span>
+<span class="nf">fetch_results</span><span class="p">([{</span><span class="nv">N</span><span class="p">,</span><span class="nv">R</span><span class="p">}|</span><span class="nv">T</span><span class="p">])</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nf">is_prime</span><span class="p">(</span><span class="nv">R</span><span class="p">)</span> <span class="k">of</span>
+        <span class="n">true</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nv">N</span><span class="p">,</span><span class="nv">R</span><span class="p">}</span>
+        <span class="p">;_</span>   <span class="o">-&gt;</span> <span class="nf">fetch_results</span><span class="p">(</span><span class="nv">T</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">prime</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>                    <span class="o">-&gt;</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">;</span>
+<span class="nf">prime</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="k">when</span> <span class="nv">N</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">N</span> <span class="o">=&lt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="nf">prime</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="nv">N</span><span class="p">,</span><span class="mi">2</span><span class="p">),[</span><span class="mi">2</span><span class="p">]);</span>
+<span class="nf">prime</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="k">when</span> <span class="nv">N</span> <span class="o">&gt;</span> <span class="mi">6</span>         <span class="o">-&gt;</span>
+    <span class="nf">prime</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">merge</span><span class="p">(</span> <span class="p">[</span><span class="mi">6</span><span class="o">*</span><span class="nv">K</span><span class="o">-</span><span class="mi">1</span> <span class="p">||</span> <span class="nv">K</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="nv">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="ow">div</span> <span class="mi">6</span><span class="p">)],</span> <span class="p">[</span><span class="mi">6</span><span class="o">*</span><span class="nv">K</span><span class="o">+</span><span class="mi">1</span> <span class="p">||</span> <span class="nv">K</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,(</span><span class="nv">N</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="ow">div</span> <span class="mi">6</span><span class="p">)]</span> <span class="p">),</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]);</span>
+<span class="nf">prime</span><span class="p">(_)</span>                    <span class="o">-&gt;</span> <span class="p">[].</span>
+
+<span class="nf">prime</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">P</span><span class="p">)</span>                  <span class="o">-&gt;</span> <span class="nf">prime</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nn">lists</span><span class="p">:</span><span class="nf">reverse</span><span class="p">(</span><span class="nv">P</span><span class="p">),</span><span class="nv">P</span><span class="p">).</span>
+
+<span class="nf">prime</span><span class="p">([],_,</span><span class="nv">P</span><span class="p">)</span>                                          <span class="o">-&gt;</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">reverse</span><span class="p">(</span><span class="nv">P</span><span class="p">)</span> <span class="p">;</span>
+<span class="nf">prime</span><span class="p">([</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">],[</span><span class="nv">HP</span><span class="p">|</span><span class="nv">TP</span><span class="p">],</span><span class="nv">P</span><span class="p">)</span> <span class="k">when</span> <span class="nv">HP</span> <span class="o">*</span> <span class="nv">HP</span> <span class="o">=&lt;</span> <span class="nv">H</span><span class="p">,</span><span class="nv">H</span> <span class="ow">rem</span> <span class="nv">HP</span> <span class="o">&gt;</span> <span class="mi">0</span>  <span class="o">-&gt;</span> <span class="nf">prime</span><span class="p">([</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">],</span><span class="nv">TP</span><span class="p">,</span><span class="nv">P</span><span class="p">);</span>
+<span class="nf">prime</span><span class="p">([</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">],[</span><span class="nv">HP</span><span class="p">|_],</span><span class="nv">P</span><span class="p">)</span>  <span class="k">when</span> <span class="nv">HP</span> <span class="o">*</span> <span class="nv">HP</span> <span class="o">&gt;</span> <span class="nv">H</span>                <span class="o">-&gt;</span> <span class="nf">prime</span><span class="p">(</span><span class="nv">T</span><span class="p">,[</span><span class="nv">H</span><span class="p">|</span><span class="nv">P</span><span class="p">]);</span>
+<span class="nf">prime</span><span class="p">([_|</span><span class="nv">T</span><span class="p">],_,</span><span class="nv">P</span><span class="p">)</span>                                       <span class="o">-&gt;</span> <span class="nf">prime</span><span class="p">(</span><span class="nv">T</span><span class="p">,</span><span class="nv">P</span><span class="p">).</span>
+
+<span class="nf">is_prime</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span>   <span class="o">-&gt;</span> <span class="nf">is_prime</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span> <span class="mi">2</span><span class="p">).</span>
+<span class="nf">is_prime</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">true</span><span class="p">;</span>
+<span class="nf">is_prime</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">M</span><span class="p">)</span> <span class="k">when</span> <span class="nv">N</span> <span class="ow">rem</span> <span class="nv">M</span> <span class="o">=:=</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">false</span><span class="p">;</span>
+<span class="nf">is_prime</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">M</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">is_prime</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span><span class="nv">M</span><span class="o">+</span><span class="mi">1</span><span class="p">).</span> 
+
+</pre></td></tr></tbody></table>
+</div>
+
+<h2>Python version</h2>
+<div class="highlight python"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83</pre></td><td class="code"><pre><span class="n">prime_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">23</span><span class="p">]</span>   <span class="c"># Ensure that this is initialised with at least 1 prime</span>
+<span class="n">prime_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">prime_list</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">lastn</span>      <span class="o">=</span> <span class="n">prime_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">_isprime</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="s">''' Raw check to see if n is prime. Assumes that prime_list is already populated '''</span>
+    <span class="n">isprime</span> <span class="o">=</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">2</span> <span class="ow">and</span> <span class="mi">1</span> <span class="ow">or</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">prime_list</span><span class="p">:</span>                    <span class="c"># Check for factors with all primes</span>
+        <span class="k">if</span> <span class="n">prime</span> <span class="o">*</span> <span class="n">prime</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span> <span class="k">break</span>             <span class="c"># ... up to sqrt(n)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">%</span> <span class="n">prime</span><span class="p">:</span>
+            <span class="n">isprime</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="n">isprime</span><span class="p">:</span> <span class="n">prime_dict</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>               <span class="c"># Maintain a dictionary for fast lookup</span>
+    <span class="k">return</span> <span class="n">isprime</span>
+
+<span class="k">def</span> <span class="nf">_refresh</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="s">''' Refreshes primes upto x '''</span>
+    <span class="k">global</span> <span class="n">lastn</span>
+    <span class="k">while</span> <span class="n">lastn</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">:</span>                           <span class="c"># Keep working until we've got up to x</span>
+        <span class="n">lastn</span> <span class="o">=</span> <span class="n">lastn</span> <span class="o">+</span> <span class="mi">1</span>                       <span class="c"># Check the next number</span>
+        <span class="k">if</span> <span class="n">_isprime</span><span class="p">(</span><span class="n">lastn</span><span class="p">):</span>
+            <span class="n">prime_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lastn</span><span class="p">)</span>            <span class="c"># Maintain a list for sequential access</span>
+
+<span class="k">def</span> <span class="nf">prime</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="s">''' Returns the xth prime '''</span>
+    <span class="k">global</span> <span class="n">lastn</span>
+    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">prime_list</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">:</span>                 <span class="c"># Keep working until we've got the xth prime</span>
+        <span class="n">lastn</span> <span class="o">=</span> <span class="n">lastn</span> <span class="o">+</span> <span class="mi">1</span>                       <span class="c"># Check the next number</span>
+        <span class="k">if</span> <span class="n">_isprime</span><span class="p">(</span><span class="n">lastn</span><span class="p">):</span>
+            <span class="n">prime_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lastn</span><span class="p">)</span>            <span class="c"># Maintain a list for sequential access</span>
+    <span class="k">return</span> <span class="n">prime_list</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">isprime</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="s">''' Returns 1 if x is prime, 0 if not. Uses a pre-computed dictionary '''</span>
+    <span class="n">_refresh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                                 <span class="c"># Compute primes up to x (which is a bit wasteful)</span>
+    <span class="k">return</span> <span class="n">prime_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                 <span class="c"># Check if x is in the list</span>
+
+<span class="k">def</span> <span class="nf">factors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="s">''' Returns a prime factors of n as a list '''</span>
+    <span class="n">_refresh</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">prime_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">xp</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">%</span> <span class="n">xp</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">xp</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">xp</span> <span class="o">=</span> <span class="n">prime_list</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">f</span>
+
+<span class="k">def</span> <span class="nf">all_factors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+   <span class="s">''' Returns all factors of n, including 1 and n '''</span>
+   <span class="n">f</span> <span class="o">=</span> <span class="n">factors</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+   <span class="n">elts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+   <span class="n">numelts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">elts</span><span class="p">)</span>
+   <span class="k">def</span> <span class="nf">gen_inner</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+       <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">numelts</span><span class="p">:</span>
+           <span class="k">yield</span> <span class="mi">1</span>
+           <span class="k">return</span>
+       <span class="n">thiselt</span> <span class="o">=</span> <span class="n">elts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+       <span class="n">thismax</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">thiselt</span><span class="p">)</span>
+       <span class="n">powers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+       <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">thismax</span><span class="p">):</span>
+           <span class="n">powers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">powers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">thiselt</span><span class="p">)</span>
+       <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">gen_inner</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+           <span class="k">for</span> <span class="n">prime_power</span> <span class="ow">in</span> <span class="n">powers</span><span class="p">:</span>
+               <span class="k">yield</span> <span class="n">prime_power</span> <span class="o">*</span> <span class="n">d</span>
+   <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">gen_inner</span><span class="p">(</span><span class="mi">0</span><span class="p">):</span>
+       <span class="k">yield</span> <span class="n">d</span>
+
+<span class="k">def</span> <span class="nf">num_factors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="s">''' Returns the number of factors of n, including 1 and n '''</span>
+    <span class="n">div</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">n</span> <span class="o">%</span> <span class="n">prime</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">/</span> <span class="n">prime</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">div</span> <span class="o">=</span> <span class="n">div</span> <span class="o">*</span> <span class="n">c</span>
+    <span class="k">return</span> <span class="n">div</span>
+
+</pre></td></tr></tbody></table>
+</div>
+
+<h2>Perl version</h2>
+<div class="highlight perl"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37</pre></td><td class="code"><pre><span class="c1">#!/usr/bin/perl -w</span>
+
+<span class="k">use</span> <span class="nv">strict</span><span class="p">;</span>
+
+<span class="k">sub </span><span class="nf">primes</span> <span class="p">{</span>
+    <span class="k">my</span> <span class="nv">@n</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">..</span><span class="nb">shift</span><span class="p">);</span>
+    <span class="k">my</span> <span class="nv">@p</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nv">@n</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nb">push</span> <span class="nv">@p</span><span class="p">,</span> <span class="nb">shift</span> <span class="nv">@n</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nv">@n</span> <span class="o">=</span> <span class="nb">grep</span> <span class="p">{</span> <span class="nv">$_</span> <span class="nv">%</span> <span class="err">$</span><span class="nv">p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">}</span> <span class="nv">@n</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nv">@p</span>
+<span class="p">}</span>
+
+
+<span class="k">sub </span><span class="nf">is_prime</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="mi">2</span><span class="o">..</span><span class="nb">int</span><span class="p">(</span><span class="nb">sqrt</span><span class="p">(</span><span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">]))){</span> <span class="k">return</span> <span class="mi">0</span> <span class="k">unless</span> <span class="nv">$_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="nv">%</span> <span class="err">$</span><span class="nv">_</span><span class="p">}</span>
+    <span class="mi">1</span>
+<span class="p">}</span>
+
+<span class="k">my</span> <span class="nv">@p</span> <span class="o">=</span> <span class="nv">primes</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+
+<span class="k">my</span><span class="p">(</span><span class="nv">$len</span><span class="p">,</span> <span class="nv">$sum</span><span class="p">,</span> <span class="nv">$mlen</span><span class="p">,</span> <span class="nv">$msum</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="k">for</span> <span class="k">my</span> <span class="nv">$n</span> <span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="nv">$#p</span><span class="p">){</span>
+    <span class="k">for</span> <span class="k">my</span> <span class="nv">$m</span> <span class="p">(</span><span class="nv">$n</span><span class="o">..</span><span class="nv">$#p</span><span class="p">){</span>
+        <span class="nv">$sum</span> <span class="o">+=</span> <span class="nv">$p</span><span class="p">[</span><span class="nv">$m</span><span class="p">];</span>
+        <span class="k">if</span><span class="p">(</span><span class="nv">is_prime</span><span class="p">(</span><span class="nv">$sum</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nv">$sum</span> <span class="o">&lt;</span> <span class="mi">1000000</span> <span class="o">&amp;&amp;</span> <span class="nv">$mlen</span> <span class="o">&lt;</span> <span class="nv">$len</span><span class="p">){</span>
+            <span class="p">(</span><span class="nv">$mlen</span><span class="p">,</span> <span class="nv">$msum</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="nv">$len</span><span class="p">,</span> <span class="nv">$sum</span><span class="p">)</span>
+        <span class="p">}</span><span class="k">elsif</span><span class="p">(</span><span class="nv">$sum</span> <span class="o">&lt;</span> <span class="mi">1000000</span><span class="p">){</span> <span class="nv">$len</span><span class="o">++</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">{</span> <span class="k">last</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="p">(</span><span class="nv">$len</span><span class="p">,</span> <span class="nv">$sum</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">print</span> <span class="nv">$mlen</span><span class="o">.</span><span class="s">"--"</span><span class="o">.</span><span class="nv">$msum</span><span class="o">.</span><span class="s">"\n"</span><span class="p">;</span>
+
+
+
+</pre></td></tr></tbody></table>
+</div>
+
+<h2>Performance</h2>
+<div class="highlight shell"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></td><td class="code"><pre><span class="gp">mkh@mkh-xps:~/work/mblog/pr_euler/p50$ </span><span class="nb">time</span> ./p50.erl
+Answer <span class="o">{</span>543,997651<span class="o">}</span>
+
+real    0m0.340s
+user    0m0.305s
+sys     0m0.078s
+<span class="gp">mkh@mkh-xps:~/work/mblog/pr_euler/p50$ </span><span class="nb">time</span> ./p50.pl
+541--997651
+
+real    0m0.897s
+user    0m0.893s
+sys     0m0.004s
+<span class="gp">mkh@mkh-xps:~/work/mblog/pr_euler/p50$ </span><span class="nb">time</span> ./p50.py
+997651
+
+real    0m1.377s
+user    0m1.371s
+sys     0m0.008s
+mkh@mkh-xps:~/work/mblog/pr_euler/p50
+</pre></td></tr></tbody></table>
+</div>
+
+<div id="disqus_thread"></div>
+
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+    this.page.url = '/2015/11/20/project-euler-problem-50/'; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 'pep50'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//mijkenator.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+</section>
+<footer class='post-footer'>
+<section class='author'>
+<h4>
+<a href='/author/mijkenator/'>Mijkenator</a>
+</h4>
+<p></p>
+Read
+<a href='/author/mijkenator/'>more posts</a>
+by this author.
+</section>
+<section class='share'>
+<h4>Share this post</h4>
+<a class='icon-twitter' href='https://twitter.com/intent/tweet?text=Project Euler Problem 50&amp;amp;url=http://mijkenator.github.io/2015/11/20/project-euler-problem-50/' onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+<span class='hidden'>Twitter</span>
+</a>
+<a class='icon-facebook' href='https://www.facebook.com/sharer/sharer.php?u=http://mijkenator.github.io/2015/11/20/project-euler-problem-50/' onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+<span class='hidden'>Facebook</span>
+</a>
+<a class='icon-google-plus' href='https://plus.google.com/share?url=http://mijkenator.github.io/2015/11/20/project-euler-problem-50/' onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+<span class='hidden'>Google+</span>
+</a>
+</section>
+</footer>
+</article>
+</main>
+<aside class='read-next'>
+<a class='no-cover read-next-story' href='/2015/11/18/project-euler-problem-5/'>
+<section class='post'>
+<h2>Project Euler Problem 5</h2>
+<p>Smallest multiple 2520 is the smallest number that can be divided by each of the numbers from 1 to&hellip;</p>
+</section>
+</a>
+<a class='no-cover prev read-next-story' href='/2015/11/22/project-euler-problem-7/'>
+<section class='post'>
+<h2>Project Euler Problem 7</h2>
+<p>10001st prime By listing the first six prime numbers: 2, 3, 5, 7, 11, and 13, we can see&hellip;</p>
+</section>
+</a>
+</aside>
+
+<footer class='site-footer clearfix'>
+<section class='copyright'>
+<a href='/'>Mijkenator`s blog</a>
+&copy;
+2016
+</section>
+<section class='poweredby'>
+Casper theme powered by
+<a href='https://ghost.org'>Ghost</a>
+</section>
+</footer>
+</div>
+<script src="/javascripts/application.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(["_setAccount", "UA-69950918-1"]);
+  _gaq.push(["_trackPageview"]);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Mijkenator`s blog: prime factorization</title>
+  <subtitle>Posts tagged with prime factorization</subtitle>
+  <id>http://mijkenator.github.io</id>
+  <link href="http://mijkenator.github.io"/>
+  <link href="http://mijkenator.github.io/tag/prime-factorization/feed.xml" rel="self"/>
+  <updated>2016-05-31T20:16:00+00:00</updated>
+  <author>
+    <name>Mijkenator</name>
+  </author>
+  <entry>
+    <title>Integer Prime Decomposition and Prime Factorization</title>
+    <link rel="alternate" href="http://mijkenator.github.io/2015/12/24/integer_prime_decomposition_factorization/"/>
+    <id>http://mijkenator.github.io/2015/12/24/integer_prime_decomposition_factorization/</id>
+    <published>2015-12-24T18:35:00+00:00</published>
+    <updated>2016-06-02T12:21:14+00:00</updated>
+    <author>
+      <name>Mijkenator</name>
+    </author>
+    <summary type="html">Prime Factorization. 
+
+Prime factorization or integer factorization of a number is the determination of the set of prime numbers which multiply together to give the original integer. It is also known as prime decomposition.
+See also Integer factorization</summary>
+  </entry>
+</feed>
