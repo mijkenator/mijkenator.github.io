@@ -178,7 +178,7 @@ divisors(K,N,_) -> [K,N div K] ++ divisors(K+1,N,math:sqrt(N)).
 */
 /*
 var disqus_config = function () {
-    this.page.url = '2015/12/24/integer_prime_decomposition_factorization/'; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.url = '/2015/12/24/integer_prime_decomposition_factorization/'; // Replace PAGE_URL with your page's canonical URL variable
     this.page.identifier = 'ipdf1'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
 };
 */

@@ -1,0 +1,7 @@
+https://gorails.com/setup/ubuntu/14.04
+rbenv install 2.2.3
+rbenv global 2.2.3
+ruby -v
+
+
+https://github.com/middleman/middleman-syntax
