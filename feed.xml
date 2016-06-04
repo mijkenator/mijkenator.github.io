@@ -5,10 +5,27 @@
   <id>http://mijkenator.github.io</id>
   <link href="http://mijkenator.github.io"/>
   <link href="http://mijkenator.github.io/feed.xml" rel="self"/>
-  <updated>2016-05-31T20:16:00+00:00</updated>
+  <updated>2016-06-03T19:33:00+00:00</updated>
   <author>
     <name>Mijkenator</name>
   </author>
+  <entry>
+    <title>Project Euler problem 52</title>
+    <link rel="alternate" href="http://mijkenator.github.io/2016/06/03/erlang-python-project-euler-52/"/>
+    <id>http://mijkenator.github.io/2016/06/03/erlang-python-project-euler-52/</id>
+    <published>2016-06-03T19:33:00+00:00</published>
+    <updated>2016-06-04T00:44:00+00:00</updated>
+    <author>
+      <name>Mijkenator</name>
+    </author>
+    <summary type="html">Permuted multiples
+
+It can be seen that the number, 125874, and its double, 251748, contain exactly the same digits, but in a different order.
+
+Find the smallest positive integer, x, such that 2x, 3x, 4x, 5x, and 6x, contain the same digits.
+
+</summary>
+  </entry>
   <entry>
     <title>Project Euler problem 51</title>
     <link rel="alternate" href="http://mijkenator.github.io/2016/05/31/erlang-python-project-euler-51/"/>
@@ -95,30 +112,6 @@ The first three consecutive numbers to have three distinct prime factors are:
         644 = 2² × 7 × 23
         645 = 3 × 5 × 43
         646 = 2 × 17 × 19.
-
-
-</summary>
-  </entry>
-  <entry>
-    <title>Project Euler problem 46</title>
-    <link rel="alternate" href="http://mijkenator.github.io/2016/04/12/erlang-python-project-euler-46/"/>
-    <id>http://mijkenator.github.io/2016/04/12/erlang-python-project-euler-46/</id>
-    <published>2016-04-12T18:20:00+00:00</published>
-    <updated>2016-05-22T21:33:30+00:00</updated>
-    <author>
-      <name>Mijkenator</name>
-    </author>
-    <summary type="html">Goldbach&amp;rsquo;s other conjecture
-
-It was proposed by Christian Goldbach that every odd composite number can be written as the sum of a prime and twice a square.
-
-
-        9  = 7  + 2×1^2
-        15 = 7  + 2×2^2
-        21 = 3  + 2×3^2
-        25 = 7  + 2×3^2
-        27 = 19 + 2×2^2
-        33 = 31 + 2×1^2
 
 
 </summary>
