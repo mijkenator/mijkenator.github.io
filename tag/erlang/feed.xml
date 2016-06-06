@@ -5,10 +5,31 @@
   <id>http://mijkenator.github.io</id>
   <link href="http://mijkenator.github.io"/>
   <link href="http://mijkenator.github.io/tag/erlang/feed.xml" rel="self"/>
-  <updated>2016-06-03T19:33:00+00:00</updated>
+  <updated>2016-06-06T17:41:00+00:00</updated>
   <author>
     <name>Mijkenator</name>
   </author>
+  <entry>
+    <title>Project Euler problem 53</title>
+    <link rel="alternate" href="http://mijkenator.github.io/2016/06/06/erlang-python-project-euler-53/"/>
+    <id>http://mijkenator.github.io/2016/06/06/erlang-python-project-euler-53/</id>
+    <published>2016-06-06T17:41:00+00:00</published>
+    <updated>2016-06-06T18:53:23+00:00</updated>
+    <author>
+      <name>Mijkenator</name>
+    </author>
+    <summary type="html">Combinatoric selections
+
+There are exactly ten ways of selecting three from five, 12345:
+
+
+        123, 124, 125, 134, 135, 145, 234, 235, 245, and 345
+
+
+In combinatorics, we use the notation, C(3,5) = 10.
+
+</summary>
+  </entry>
   <entry>
     <title>Project Euler problem 52</title>
     <link rel="alternate" href="http://mijkenator.github.io/2016/06/03/erlang-python-project-euler-52/"/>
@@ -85,34 +106,6 @@ There are no arithmetic sequences made up of three 1-, 2-, or 3-digit primes, ex
 The series, 1^1 + 2^2 + 3^3 + &amp;hellip; + 10^10 = 10405071317.
 
 Find the last ten digits of the series, 1^1 + 2^2 + 3^3 + &amp;hellip; + 1000^1000.
-
-</summary>
-  </entry>
-  <entry>
-    <title>Project Euler problem 47</title>
-    <link rel="alternate" href="http://mijkenator.github.io/2016/04/13/erlang-python-project-euler-47/"/>
-    <id>http://mijkenator.github.io/2016/04/13/erlang-python-project-euler-47/</id>
-    <published>2016-04-13T14:00:00+00:00</published>
-    <updated>2016-05-22T21:33:30+00:00</updated>
-    <author>
-      <name>Mijkenator</name>
-    </author>
-    <summary type="html">Distinct primes factors
-
-The first two consecutive numbers to have two distinct prime factors are:
-
-
-        14 = 2 × 7
-        15 = 3 × 5
-
-
-The first three consecutive numbers to have three distinct prime factors are:
-
-
-        644 = 2² × 7 × 23
-        645 = 3 × 5 × 43
-        646 = 2 × 17 × 19.
-
 
 </summary>
   </entry>
