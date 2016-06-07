@@ -8,5 +8,6 @@
       - css_class << "nav-current" if current_page.url == href
       %li{class: css_class.join(' '), role: :presentation}
         %a{href: href}= label
-  %a.subscribe-button.icon-feed{href: feed_path} Subscribe
+  - feed_path1 = feed_path.gsub(/^\/tag\/(.+)\/page\/\d+\/feed.xml$/, "/tag/\\1/feed.xml")
+  %a.subscribe-button.icon-feed{href: feed_path1} Subscribe
 %span.nav-cover
