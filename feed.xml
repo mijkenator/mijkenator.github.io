@@ -5,10 +5,23 @@
   <id>http://mijkenator.github.io</id>
   <link href="http://mijkenator.github.io"/>
   <link href="http://mijkenator.github.io/feed.xml" rel="self"/>
-  <updated>2016-06-06T17:41:00+00:00</updated>
+  <updated>2016-10-11T20:34:00+00:00</updated>
   <author>
     <name>Mijkenator</name>
   </author>
+  <entry>
+    <title>Merge sort with erlang, elixir, python</title>
+    <link rel="alternate" href="http://mijkenator.github.io/2016/10/11/2016-10-11-erlang-elixir-python-merge-sort-52-html-markdown/"/>
+    <id>http://mijkenator.github.io/2016/10/11/2016-10-11-erlang-elixir-python-merge-sort-52-html-markdown/</id>
+    <published>2016-10-11T20:34:00+00:00</published>
+    <updated>2016-10-12T18:10:09+00:00</updated>
+    <author>
+      <name>Mijkenator</name>
+    </author>
+    <summary type="html">Wikipedia article about merge sort algorithm.
+
+</summary>
+  </entry>
   <entry>
     <title>Project Euler problem 53</title>
     <link rel="alternate" href="http://mijkenator.github.io/2016/06/06/erlang-python-project-euler-53/"/>
@@ -89,23 +102,6 @@ By replacing the 3rd and 4th digits of 56**3 with the same digit, this 5-digit</
 The arithmetic sequence, 1487, 4817, 8147, in which each of the terms increases by 3330, is unusual in two ways: (i) each of the three terms are prime, and, (ii) each of the 4-digit numbers are permutations of one another.
 
 There are no arithmetic sequences made up of three 1-, 2-, or 3-digit primes, exhibiting this property, but there is one other 4-digit increasing sequence.
-
-</summary>
-  </entry>
-  <entry>
-    <title>Project Euler problem 48</title>
-    <link rel="alternate" href="http://mijkenator.github.io/2016/04/13/erlang-python-project-euler-48/"/>
-    <id>http://mijkenator.github.io/2016/04/13/erlang-python-project-euler-48/</id>
-    <published>2016-04-13T15:58:00+00:00</published>
-    <updated>2016-06-06T19:13:09+00:00</updated>
-    <author>
-      <name>Mijkenator</name>
-    </author>
-    <summary type="html">Self powers
-
-The series, 1^1 + 2^2 + 3^3 + &amp;hellip; + 10^10 = 10405071317.
-
-Find the last ten digits of the series, 1^1 + 2^2 + 3^3 + &amp;hellip; + 1000^1000.
 
 </summary>
   </entry>
