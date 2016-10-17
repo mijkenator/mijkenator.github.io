@@ -5,6 +5,7 @@ tags: algorithm, elixir, erlang, python, merge sort
 layout: post
 ---
 
+[Source code examples on Github](https://github.com/mijkenator/pr_euler/tree/master/algorithms/mergesort)
 [Wikipedia article about merge sort algorithm.](https://en.wikipedia.org/wiki/Merge_sort)<br>
 
 READMORE
@@ -171,4 +172,28 @@ real    0m38.014s
 user    0m37.480s
 sys     0m0.252s
 ```
+<div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+    this.page.url = '/2016/10/11/2016-10-11-erlang-elixir-python-merge-sort-52-html-markdown//'; // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = 'alg-mergesort'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//mijkenator.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
 
