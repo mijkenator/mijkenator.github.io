@@ -136,6 +136,43 @@ on <a href='/tag/algorithm/'>algorithm</a>, <a href='/tag/elixir/'>elixir</a>, <
     <span class="k">return</span> <span class="n">result</span><span class="p">,</span> <span class="n">count</span>
 </pre></td></tr></tbody></table>
 </div>
+
+<p>Erlang Implementation</p>
+<div class="highlight erlang"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17</pre></td><td class="code"><pre><span class="nf">inv_count</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="k">when</span> <span class="nb">length</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="o">=&lt;</span> <span class="mi">1</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="nv">L</span><span class="p">};</span>
+<span class="nf">inv_count</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="nv">L1</span><span class="p">,</span> <span class="nv">L2</span><span class="p">}</span>   <span class="o">=</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">split</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="ow">div</span> <span class="mi">2</span><span class="p">,</span> <span class="nv">L</span><span class="p">),</span>
+    <span class="p">{</span><span class="nv">A</span><span class="p">,</span> <span class="nv">Left</span><span class="p">}</span>  <span class="o">=</span> <span class="nf">inv_count</span><span class="p">(</span><span class="nv">L1</span><span class="p">),</span>
+    <span class="p">{</span><span class="nv">B</span><span class="p">,</span> <span class="nv">Right</span><span class="p">}</span> <span class="o">=</span> <span class="nf">inv_count</span><span class="p">(</span><span class="nv">L2</span><span class="p">),</span>
+    <span class="p">{</span><span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span><span class="p">}</span>   <span class="o">=</span> <span class="nf">mcsi</span><span class="p">(</span><span class="nv">Left</span><span class="p">,</span> <span class="nv">Right</span><span class="p">),</span>
+    <span class="p">{</span><span class="nv">A</span><span class="o">+</span><span class="nv">B</span><span class="o">+</span><span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span><span class="p">}.</span>
+
+<span class="nf">mcsi</span><span class="p">(</span><span class="nv">L</span><span class="p">,</span> <span class="nv">R</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nf">mcsi_i</span><span class="p">(</span><span class="nb">length</span><span class="p">(</span><span class="nv">L</span><span class="p">),</span><span class="mi">0</span><span class="p">,[],</span><span class="nv">L</span><span class="p">,</span><span class="nv">R</span><span class="p">).</span>
+
+<span class="nf">mcsi_i</span><span class="p">(_,</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span><span class="p">,</span> <span class="p">[],</span> <span class="nv">Right</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span> <span class="o">++</span> <span class="nv">Right</span><span class="p">};</span>
+<span class="nf">mcsi_i</span><span class="p">(_,</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span><span class="p">,</span> <span class="nv">Left</span><span class="p">,</span> <span class="p">[])</span>  <span class="o">-&gt;</span> <span class="p">{</span><span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span> <span class="o">++</span> <span class="nv">Left</span><span class="p">};</span>
+<span class="nf">mcsi_i</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span><span class="p">,</span> <span class="p">[</span><span class="nv">HL</span><span class="p">|</span><span class="nv">TL</span><span class="p">]</span> <span class="o">=</span> <span class="nv">Left</span><span class="p">,</span> <span class="p">[</span><span class="nv">HR</span><span class="p">|</span><span class="nv">TR</span><span class="p">]</span> <span class="o">=</span> <span class="nv">Right</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nv">HL</span> <span class="o">=&lt;</span> <span class="nv">HR</span> <span class="k">of</span> 
+        <span class="n">true</span>  <span class="o">-&gt;</span> <span class="nf">mcsi_i</span><span class="p">(</span><span class="nv">N</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nv">C</span><span class="p">,</span> <span class="nv">Res</span> <span class="o">++</span> <span class="p">[</span><span class="nv">HL</span><span class="p">],</span> <span class="nv">TL</span><span class="p">,</span> <span class="nv">Right</span><span class="p">);</span>
+        <span class="n">false</span> <span class="o">-&gt;</span> <span class="nf">mcsi_i</span><span class="p">(</span><span class="nv">N</span><span class="p">,</span> <span class="nv">C</span><span class="o">+</span><span class="nv">N</span><span class="p">,</span> <span class="nv">Res</span> <span class="o">++</span> <span class="p">[</span><span class="nv">HR</span><span class="p">],</span> <span class="nv">Left</span><span class="p">,</span> <span class="nv">TR</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></td></tr></tbody></table>
+</div>
 </section>
 <footer class='post-footer'>
 <section class='author'>
