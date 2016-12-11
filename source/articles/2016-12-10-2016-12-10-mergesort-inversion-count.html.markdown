@@ -49,4 +49,26 @@ def merge_count_split_inversion(left, right):
     return result, count
 ```
 
+Erlang Implementation
+
+```erlang
+inv_count(L) when length(L) =< 1 -> {0, L};
+inv_count(L) ->
+    {L1, L2}   = lists:split(length(L) div 2, L),
+    {A, Left}  = inv_count(L1),
+    {B, Right} = inv_count(L2),
+    {C, Res}   = mcsi(Left, Right),
+    {A+B+C, Res}.
+
+mcsi(L, R) -> mcsi_i(length(L),0,[],L,R).
+
+mcsi_i(_, C, Res, [], Right) -> {C, Res ++ Right};
+mcsi_i(_, C, Res, Left, [])  -> {C, Res ++ Left};
+mcsi_i(N, C, Res, [HL|TL] = Left, [HR|TR] = Right) ->
+    case HL =< HR of 
+        true  -> mcsi_i(N-1, C, Res ++ [HL], TL, Right);
+        false -> mcsi_i(N, C+N, Res ++ [HR], Left, TR)
+    end.
+```
+
 
